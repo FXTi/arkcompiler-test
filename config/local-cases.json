@@ -528,5 +528,32 @@
       "license": "Apache-2.0"
     },
     "expected_stdout": "true\ntrue\n"
+  },
+  {
+    "id": "local/debugger",
+    "source": "local/debugger.js",
+    "tags": [
+      "isa",
+      "debugger"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "1\n"
+  },
+  {
+    "id": "local/decrement",
+    "source": "local/decrement.js",
+    "tags": [
+      "isa",
+      "numeric",
+      "loops"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "3\n2\n1\n"
   }
 ]

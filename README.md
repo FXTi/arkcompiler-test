@@ -151,6 +151,48 @@ arguments and tool outputs. Stable source paths are used during generation.
 Base/apt repositories may change; this is traceable artifact generation, not a claim
 that upstream binaries or arbitrary future Docker builds are byte-reproducible.
 
+## Publish through GitHub Actions
+
+The compiler tool bundle is intentionally not committed. After staging the artifacts
+on a machine with the OpenHarmony checkout, create it with:
+
+```sh
+make prepare
+make tool-bundle TOOLS_BUNDLE=arkcompiler-test-tools.tar.zst
+```
+
+Authenticate GitHub CLI once with `gh auth login`, then upload the bundle to a pinned
+release. The release tag identifies the toolchain and is never inferred from a moving
+branch:
+
+```sh
+gh release create tools-v1 arkcompiler-test-tools.tar.zst \
+  --repo FXTi/arkcompiler-test \
+  --title "ArkCompiler tools v1" \
+  --notes "x64.release tools and selected corpus provenance"
+```
+
+The release must contain exactly `arkcompiler-test-tools.tar.zst`. Publishing it runs
+`.github/workflows/publish-image.yml`; it can also be started from the Actions page,
+or with:
+
+```sh
+gh workflow run publish-image.yml --repo FXTi/arkcompiler-test \
+  -f tools_release=tools-v1
+```
+
+The workflow downloads the pinned asset, builds and validates `linux/amd64`, logs in
+to GHCR using the automatic `GITHUB_TOKEN`, and pushes:
+
+```text
+ghcr.io/fxti/arkcompiler-test:tools-v1
+ghcr.io/fxti/arkcompiler-test:sha-<commit>
+```
+
+For a non-prerelease GitHub Release it also updates `:latest`. Make the GHCR package
+public in GitHub package settings if consumers should pull it without credentials.
+CI never SSHes to the build machine and never receives ignored source/toolchain dirs.
+
 ## License
 
 Apache-2.0 for this repository. Upstream source headers are retained verbatim.

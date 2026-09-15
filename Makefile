@@ -1,6 +1,6 @@
 OPENHARMONY ?= OpenHarmony-7.0-Release
 IMAGE ?= arkcompiler-test
-.PHONY: prepare build verify test
+.PHONY: prepare build verify test tool-bundle
 prepare:
 	python3 scripts/prepare.py --openharmony "$(OPENHARMONY)"
 build: prepare
@@ -10,3 +10,7 @@ verify:
 test:
 	python3 -m unittest discover -s tests -v
 	python3 scripts/smoke.py --image "$(IMAGE)"
+tool-bundle:
+	test -x .stage/bin/es2abc
+	tar --zstd -C .stage -cf "$${TOOLS_BUNDLE:-arkcompiler-test-tools.tar.zst}" \
+		bin lib sources licenses versions.json profiles.json cases.json build-info.json

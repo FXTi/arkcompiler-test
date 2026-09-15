@@ -1,8 +1,7 @@
 OPENHARMONY ?= OpenHarmony-7.0-Release
-IMAGE ?= arkcompiler-test
-IMAGE_REF ?= ghcr.io/FXTi/arkcompiler-test
-IMAGE_TAG ?= latest
-.PHONY: prepare build verify test tool-bundle
+IMAGE := arkcompiler-test:latest
+IMAGE_REF := ghcr.io/fxti/arkcompiler-test:latest
+.PHONY: prepare build verify test tool-bundle push
 prepare:
 	python3 scripts/prepare.py --openharmony "$(OPENHARMONY)"
 build: prepare
@@ -17,6 +16,6 @@ tool-bundle:
 	tar --zstd -C .stage -cf "$${TOOLS_BUNDLE:-arkcompiler-test-tools.tar.zst}" \
 		bin lib sources licenses versions.json profiles.json cases.json build-info.json
 push:
-	docker image inspect "$(IMAGE):latest" >/dev/null
-	docker tag "$(IMAGE):latest" "$(IMAGE_REF):$(IMAGE_TAG)"
-	docker push "$(IMAGE_REF):$(IMAGE_TAG)"
+	docker image inspect "$(IMAGE)" >/dev/null
+	docker tag "$(IMAGE)" "$(IMAGE_REF)"
+	docker push "$(IMAGE_REF)"

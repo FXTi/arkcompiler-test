@@ -147,8 +147,9 @@ be called directly with `docker run --entrypoint es2abc arkcompiler-test --help`
 
 ## CI and reproducibility
 
-Use an image ID/digest in consuming CI, not a mutable `latest` reference. Export
-once per job, run Rust fixture tests, then invoke `compare` on rewritten artifacts.
+Use `arkcompiler-test:latest` locally or `ghcr.io/fxti/arkcompiler-test:latest`
+from the registry. Export once per job, run Rust fixture tests, then invoke
+`compare` on rewritten artifacts.
 Retain failed candidate ABC, the corresponding manifest row and raw PA as CI artifacts.
 `make test` exercises the image offline, with a read-only root filesystem and a
 non-root user: all oracles, six-version export, altered-output mismatch, incorrect
@@ -173,15 +174,15 @@ Log in to the target registry using its normal Docker credentials. For GHCR:
 
 ```sh
 echo "$CR_PAT" | docker login ghcr.io -u FXTi --password-stdin
-make push IMAGE_REF=ghcr.io/FXTi/arkcompiler-test IMAGE_TAG=v1
+make push
 ```
 
 `make build` generates and verifies the complete corpus inside Docker. `make push`
-only tags and pushes an already-built image; it does not rebuild or silently choose a
-registry. A local push therefore produces:
+pushes the already-built `arkcompiler-test:latest` to the registry as `latest`;
+there is no separate tag parameter. The published image is:
 
 ```text
-ghcr.io/FXTi/arkcompiler-test:v1
+ghcr.io/fxti/arkcompiler-test:latest
 ```
 
 Make the GHCR package public in GitHub package settings if consumers should pull it

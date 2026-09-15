@@ -68,7 +68,8 @@ compiler cases; they call OpenHarmony-only host functions such as `terminate` an
 runner/configuration data rather than standalone source. Likewise, `testTs` is
 mostly expected-text output, not 402 independent TypeScript inputs, and is not
 mislabelled as executable corpus. The image also contains the 66 directly useful
-`.pa` references from runtime-core `checked` and `regression` under `corpus/pandasm/`.
+41 directly useful `.pa` references from runtime-core `checked` and `regression` under
+`corpus/pandasm/`.
 
 Upstream expected stdout is used where available. Project fixtures have authored
 expected stdout; outputs are never approved merely because Ark produced them.

@@ -45,9 +45,28 @@ def main():
         candidate_paths += sorted((test / suite).rglob("*.js"))
         candidate_paths += sorted((test / suite).rglob("*.ts"))
     candidate_paths = [p for p in candidate_paths if "-expected" not in p.stem]
+    version_control = test / "version_control"
+    version_specs = {}
+    vc_rules = [
+        ("API11", "11.0.2.0", ["--target-api-version=11"], ["syntax_feature", "bytecode_feature"]),
+        ("API12beta1_and_beta2", "12.0.2.0", ["--target-api-version=12", "--target-api-sub-version=beta1"], ["syntax_feature", "bytecode_feature"]),
+        ("API12beta3", "12.0.6.0", ["--target-api-version=12", "--target-api-sub-version=beta3"], ["syntax_feature", "bytecode_feature"]),
+        ("API18", "13.0.1.0", ["--target-api-version=18"], ["bytecode_feature"]),
+        ("API20", "13.0.1.0", ["--target-api-version=20", "--enable-annotations"], ["bytecode_feature"]),
+        ("API24", "24.0.0.0", ["--target-api-version=24", "--enable-callable-name"], ["bytecode_feature"]),
+    ]
+    for directory, version, compile_args, suites in vc_rules:
+        for suite in suites:
+            root = version_control / directory / suite
+            for source in sorted(root.rglob("*.js")) + sorted(root.rglob("*.ts")):
+                if "-expected" in source.stem:
+                    continue
+                candidate_paths.append(source)
+                version_specs[str(source)] = (version, compile_args, "module" if source.suffix == ".ts" or suite == "syntax_feature" else "script")
     runtime_test = oh / "arkcompiler/ets_runtime/test/executiontest/js"
     candidate_paths += sorted(runtime_test.glob("*.js"))
     for source in candidate_paths:
+        vc = version_specs.get(str(source))
         try:
             relative = str(source.relative_to(test))
             component, suite_path = "ets_frontend", "es2panda/test/" + relative
@@ -69,6 +88,11 @@ def main():
                            "revision": revisions[component], "path": suite_path,
                            "license": "Apache-2.0"},
                 "mode": mode}
+        if vc:
+            case["versions"] = [vc[0]]
+            case["compile_args"] = vc[1]
+            case["mode"] = vc[2]
+            case["tags"] = ["version-control", "isa", "source"]
         for key in ["mode", "expected_stdout", "runtime_reason", "versions", "profiles"]:
             if key in entry:
                 case[key] = entry[key]

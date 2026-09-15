@@ -157,5 +157,376 @@
     },
     "runtime_reason": "Unresolved import records are intentional file-format fixtures; no linked dependency ABC.",
     "mode": "module"
+  },
+  {
+    "id": "local/bitwise",
+    "source": "local/bitwise.js",
+    "tags": [
+      "isa",
+      "bitwise",
+      "numeric"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "0\n255\n255\n-241\n16\n8\n8\n"
+  },
+  {
+    "id": "local/numeric-operators",
+    "source": "local/numeric-operators.js",
+    "tags": [
+      "isa",
+      "numeric",
+      "arithmetic"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "4\n1\n32\n-8\n7\n"
+  },
+  {
+    "id": "local/comparisons",
+    "source": "local/comparisons.js",
+    "tags": [
+      "isa",
+      "comparison",
+      "objects"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "true\ntrue\nobject\ntrue\ntrue\n"
+  },
+  {
+    "id": "local/array-index",
+    "source": "local/array-index.js",
+    "tags": [
+      "isa",
+      "arrays",
+      "index"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "1\n8\n3\n3\n2\n"
+  },
+  {
+    "id": "local/typed-array",
+    "source": "local/typed-array.js",
+    "tags": [
+      "isa",
+      "arrays",
+      "typed-array"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "7\n255\n3\n"
+  },
+  {
+    "id": "local/async-await",
+    "source": "local/async-await.js",
+    "tags": [
+      "isa",
+      "async",
+      "promise"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "runtime_reason": "Async host scheduling is compiler/structure coverage; no VM oracle is assumed."
+  },
+  {
+    "id": "local/bigint",
+    "source": "local/bigint.js",
+    "tags": [
+      "isa",
+      "bigint",
+      "numeric"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "125\ntrue\n"
+  },
+  {
+    "id": "local/regexp",
+    "source": "local/regexp.js",
+    "tags": [
+      "isa",
+      "regexp",
+      "strings"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "true\nabc!\n"
+  },
+  {
+    "id": "local/proxy",
+    "source": "local/proxy.js",
+    "tags": [
+      "isa",
+      "proxy",
+      "objects"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "2\n"
+  },
+  {
+    "id": "local/symbol",
+    "source": "local/symbol.js",
+    "tags": [
+      "isa",
+      "symbol",
+      "objects"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "9\n"
+  },
+  {
+    "id": "local/template",
+    "source": "local/template.js",
+    "tags": [
+      "isa",
+      "template",
+      "strings"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "hello ark\na\\nb\n"
+  },
+  {
+    "id": "local/destructuring",
+    "source": "local/destructuring.js",
+    "tags": [
+      "isa",
+      "destructuring",
+      "arrays",
+      "objects"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "19\n"
+  },
+  {
+    "id": "local/iterator",
+    "source": "local/iterator.js",
+    "tags": [
+      "isa",
+      "iterator",
+      "loops"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "6\n"
+  },
+  {
+    "id": "local/optional-chain",
+    "source": "local/optional-chain.js",
+    "tags": [
+      "isa",
+      "optional-chain",
+      "objects"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "7\n4\n"
+  },
+  {
+    "id": "local/call-range",
+    "source": "local/call-range.js",
+    "tags": [
+      "isa",
+      "calls",
+      "range"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "10\n"
+  },
+  {
+    "id": "local/call-shapes",
+    "source": "local/call-shapes.js",
+    "tags": [
+      "isa",
+      "calls",
+      "range"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "6\n6\n"
+  },
+  {
+    "id": "local/property-ops",
+    "source": "local/property-ops.js",
+    "tags": [
+      "isa",
+      "objects",
+      "property"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "3\nfalse\n"
+  },
+  {
+    "id": "local/object-spread",
+    "source": "local/object-spread.js",
+    "tags": [
+      "isa",
+      "objects",
+      "spread"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "6\n"
+  },
+  {
+    "id": "local/for-in",
+    "source": "local/for-in.js",
+    "tags": [
+      "isa",
+      "objects",
+      "iterator"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "2\n"
+  },
+  {
+    "id": "local/prototype",
+    "source": "local/prototype.js",
+    "tags": [
+      "isa",
+      "objects",
+      "prototype"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "3\n"
+  },
+  {
+    "id": "local/tagged-template",
+    "source": "local/tagged-template.js",
+    "tags": [
+      "isa",
+      "template",
+      "objects"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "a3b\n"
+  },
+  {
+    "id": "local/private-field",
+    "source": "local/private-field.js",
+    "tags": [
+      "isa",
+      "classes",
+      "private"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "4\n",
+    "versions": [
+      "24.0.0.0"
+    ]
+  },
+  {
+    "id": "local/super-properties",
+    "source": "local/super-properties.js",
+    "tags": [
+      "isa",
+      "classes",
+      "super"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "2\n"
+  },
+  {
+    "id": "local/async-generator",
+    "source": "local/async-generator.js",
+    "tags": [
+      "isa",
+      "async",
+      "generator"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "runtime_reason": "Structural source fixture for compiler-generated async/module records; host scheduling or dependency is intentionally unresolved.",
+    "versions": [
+      "24.0.0.0"
+    ]
+  },
+  {
+    "id": "local/dynamic-import",
+    "source": "local/dynamic-import.js",
+    "tags": [
+      "isa",
+      "module",
+      "dynamic-import"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "runtime_reason": "Structural source fixture for compiler-generated async/module records; host scheduling or dependency is intentionally unresolved."
+  },
+  {
+    "id": "local/newtarget-this",
+    "source": "local/newtarget-this.js",
+    "tags": [
+      "isa",
+      "classes",
+      "newtarget"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "true\ntrue\n"
   }
 ]

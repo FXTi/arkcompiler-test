@@ -62,13 +62,20 @@ compiled for all six versions and profiles when its declared compiler mode suppo
 Tags identify `file`, `isa`, `ir` and feature coverage. This is a direct-use compiler
 corpus, not an assertion of complete ISA coverage.
 
+`version_control/` source cases are included with their upstream API-specific target
+arguments. This preserves real version gating for API11, API12 beta1, API12 beta3,
+API18, API20 and API24 instead of compiling every feature as API24. Run
+`python3 scripts/audit_isa.py <isa.yaml> <corpus>` to inspect mnemonic coverage per
+ABC version. The report distinguishes source-reachable instructions from deprecated,
+runtime-internal and wide encodings that require another producer.
+
 The six `ets_runtime/test/executiontest/js` inputs are included as structural
 compiler cases; they call OpenHarmony-only host functions such as `terminate` and
 `signal`, so they are not assigned a VM oracle. The runtime regression directory is
 runner/configuration data rather than standalone source. Likewise, `testTs` is
 mostly expected-text output, not 402 independent TypeScript inputs, and is not
-mislabelled as executable corpus. The image also contains the 66 directly useful
-41 directly useful `.pa` references from runtime-core `checked` and `regression` under
+mislabelled as executable corpus. The image also contains 41 directly useful `.pa`
+references from runtime-core `checked` and `regression` under
 `corpus/pandasm/`.
 
 Upstream expected stdout is used where available. Project fixtures have authored
@@ -147,9 +154,8 @@ be called directly with `docker run --entrypoint es2abc arkcompiler-test --help`
 
 ## CI and reproducibility
 
-Use `arkcompiler-test:latest` locally or `ghcr.io/fxti/arkcompiler-test:latest`
-from the registry. Export once per job, run Rust fixture tests, then invoke
-`compare` on rewritten artifacts.
+Use an image ID/digest in consuming CI, not a mutable `latest` reference. Export
+once per job, run Rust fixture tests, then invoke `compare` on rewritten artifacts.
 Retain failed candidate ABC, the corresponding manifest row and raw PA as CI artifacts.
 `make test` exercises the image offline, with a read-only root filesystem and a
 non-root user: all oracles, six-version export, altered-output mismatch, incorrect
@@ -178,16 +184,31 @@ make push
 ```
 
 `make build` generates and verifies the complete corpus inside Docker. `make push`
-pushes the already-built `arkcompiler-test:latest` to the registry as `latest`;
-there is no separate tag parameter. The published image is:
+pushes the already-built `arkcompiler-test:latest` to the registry as `latest`.
+The published image is:
 
 ```text
 ghcr.io/fxti/arkcompiler-test:latest
 ```
 
 Make the GHCR package public in GitHub package settings if consumers should pull it
-without credentials. The repository keeps a lightweight source check workflow, but
-the image build and push do not depend on GitHub Actions.
+without credentials. The image build and push do not depend on GitHub Actions.
+
+## TODO
+
+- Add source-level cases for remaining reachable ISA gaps: call range/name forms,
+  iterator-close paths, computed index/property forms, RegExp literal lowering,
+  async iteration and super/private property paths.
+- Add static-core/ETS ABC fixtures and their version matrix if static-file support
+  is enabled in `abcd-rs`.
+- Add deterministic malformed ABC fixtures for truncated sections, bad checksums,
+  invalid versions, out-of-range entities, malformed exception tables and invalid
+  jump targets. Fuzz corpora remain excluded.
+- Add normalized-pandasm comparison and an `ark_asm` producer if an assembler is
+  built; current `.pa` files are reference-only.
+- Expand runtime oracle expectations for async scheduling and OpenHarmony host APIs.
+- Revisit TypeScript expected-text conformance and Test262 after defining a
+  standalone harness and redistribution policy.
 
 ## License
 

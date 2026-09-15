@@ -62,7 +62,7 @@ def require_ok(result):
         raise RuntimeError(json.dumps(result, ensure_ascii=True))
 
 
-def compile_one(source, output, version, profile, mode="script", cwd=None):
+def compile_one(source, output, version, profile, mode="script", cwd=None, extra_args=None):
     versions = read_json(ROOT / "versions.json")
     profiles = read_json(ROOT / "profiles.json")
     output = Path(output).resolve()
@@ -73,6 +73,7 @@ def compile_one(source, output, version, profile, mode="script", cwd=None):
     args += ["--extension=" + Path(source).suffix.lstrip(".")]
     if mode != "script":
         args += ["--" + mode]
+    args += list(extra_args or [])
     result = call("es2abc", args + ["--output=" + str(output), str(source)], cwd=cwd)
     require_ok(result)
     result["abc"] = inspect(output)
@@ -116,7 +117,8 @@ def generate():
                 dest.mkdir(parents=True)
                 source = "sources/" + case["source"]
                 c = compile_one(source, dest / "input.abc", v, profile,
-                                case.get("mode", "script"), cwd=corpus)
+                                case.get("mode", "script"), cwd=corpus,
+                                extra_args=case.get("compile_args", []))
                 d = call("ark_disasm", [dest / "input.abc", dest / "reference.pa"])
                 require_ok(d)
                 if not (dest / "reference.pa").stat().st_size:

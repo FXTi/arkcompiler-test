@@ -8,16 +8,16 @@ for investigation: `es2abc`, `ark_disasm`, `ark_js_vm`.
 
 ## Build from the existing OpenHarmony build
 
-Work directory: `/home/zjx/ark`. `OpenHarmony-*`, `openharmony_prebuilts`, `repo`,
-staging artifacts and exports are ignored by Git. Docker's context is an allowlist;
-the monorepo and `.git` are not sent to Docker.
+The OpenHarmony checkout and downloaded toolchain are local build inputs only.
+Their names, paths and contents are ignored by Git. Docker's context is an allowlist;
+the monorepo, toolchain and `.git` are not sent to Docker.
 
 ```sh
 # Only if the upstream binaries need rebuilding:
-cd /home/zjx/ark/OpenHarmony-7.0-Release
+cd <OpenHarmony-checkout>
 python3 ark.py x64.release es2panda ark_disasm ark_js_vm -j8
 
-cd /home/zjx/ark
+cd <arkcompiler-test-checkout>
 make build
 make test
 ```
@@ -54,12 +54,13 @@ compatibility with historical device runtimes. Profiles are `baseline` (`-O0`),
 
 ## Test contents
 
-The corpus combines individually selected upstream JS/TS bytecode and optimizer
-cases with small project fixtures covering arithmetic, branches/loops, closures,
-try/catch/finally, MUTF-8, literal arrays, accessors/inheritance, generators, enums,
-module exports/imports. Each source is compiled for all six versions and profiles.
-Tags identify `file`, `isa`, `ir` and feature coverage. This is a seed corpus, not an
-assertion of complete ISA coverage.
+The corpus includes all direct JS/TS source inputs under the selected upstream
+`bytecode`, `optimizer` and `type_extractor` suites, plus project fixtures covering
+arithmetic, branches/loops, closures, try/catch/finally, MUTF-8, literal arrays,
+accessors/inheritance, generators, enums, module exports/imports. Each source is
+compiled for all six versions and profiles when its declared compiler mode supports it.
+Tags identify `file`, `isa`, `ir` and feature coverage. This is a direct-use compiler
+corpus, not an assertion of complete ISA coverage.
 
 Upstream expected stdout is used where available. Project fixtures have authored
 expected stdout; outputs are never approved merely because Ark produced them.

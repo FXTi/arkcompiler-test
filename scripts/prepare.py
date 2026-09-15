@@ -36,14 +36,30 @@ def main():
         if subprocess.check_output(["git", "-C", str(component), "diff", "HEAD", "--"], text=True):
             raise ValueError("upstream tracked source is dirty: " + name)
     files = {}
-    for entry in json.loads((REPO / "config/upstream-cases.json").read_text()):
-        source = test / entry["path"]
-        files[entry["path"]] = sha(source)
-        case = {"id": "upstream/" + str(Path(entry["path"]).with_suffix("")),
-                "source": "upstream/" + entry["path"], "tags": entry["tags"],
+    overrides = {e["path"]: e for e in json.loads((REPO / "config/upstream-cases.json").read_text())}
+    # These are the direct source inputs in the three agreed compiler suites.
+    # Expected-output files, harnesses and C++ tests are deliberately excluded.
+    candidate_paths = []
+    for suite in ["bytecode", "optimizer", "type_extractor"]:
+        candidate_paths += sorted((test / suite).rglob("*.js"))
+        candidate_paths += sorted((test / suite).rglob("*.ts"))
+    candidate_paths = [p for p in candidate_paths if "-expected" not in p.stem]
+    for source in candidate_paths:
+        relative = str(source.relative_to(test))
+        entry = overrides.get(relative, {})
+        files[relative] = sha(source)
+        tags = entry.get("tags", [relative.split("/", 1)[0], "upstream"])
+        mode = entry.get("mode", "module" if relative.endswith((".js", ".ts")) and
+                              any(line.lstrip().startswith(("import ", "export "))
+                                  for line in source.read_text(errors="replace").splitlines()) else "script")
+        if "commonjs" in relative:
+            mode = "commonjs"
+        case = {"id": "upstream/" + str(Path(relative).with_suffix("")),
+                "source": "upstream/" + relative, "tags": tags,
                 "origin": {"kind": "upstream", "component": "ets_frontend",
                            "revision": revisions["ets_frontend"],
-                           "path": "es2panda/test/" + entry["path"], "license": "Apache-2.0"}}
+                           "path": "es2panda/test/" + relative, "license": "Apache-2.0"},
+                "mode": mode}
         for key in ["mode", "expected_stdout", "runtime_reason", "versions", "profiles"]:
             if key in entry:
                 case[key] = entry[key]
@@ -80,7 +96,8 @@ def main():
             raise ValueError("expected ELF64 artifact: " + str(src))
         shutil.copy2(src, stage / target)
         artifact_info[target] = {"sha256": sha(src), "bytes": src.stat().st_size,
-                                 "ldd": subprocess.check_output(["ldd", str(src)], text=True)}
+                                 "ldd": subprocess.check_output(["ldd", str(src)], text=True)
+                                 .replace(str(oh) + "/", "<build>/")}
     sources = stage / "sources"
     shutil.copytree(REPO / "cases", sources / "local")
     for rel in files:

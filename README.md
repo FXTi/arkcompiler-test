@@ -151,47 +151,33 @@ arguments and tool outputs. Stable source paths are used during generation.
 Base/apt repositories may change; this is traceable artifact generation, not a claim
 that upstream binaries or arbitrary future Docker builds are byte-reproducible.
 
-## Publish through GitHub Actions
+## Build and push locally
 
-The compiler tool bundle is intentionally not committed. After staging the artifacts
-on a machine with the OpenHarmony checkout, create it with:
-
-```sh
-make prepare
-make tool-bundle TOOLS_BUNDLE=arkcompiler-test-tools.tar.zst
-```
-
-Authenticate GitHub CLI once with `gh auth login`, then upload the bundle to a pinned
-release. The release tag identifies the toolchain and is never inferred from a moving
-branch:
+The image is built and pushed locally; CI is not required. After staging the artifacts
+on a machine with the OpenHarmony checkout, run:
 
 ```sh
-gh release create tools-v1 arkcompiler-test-tools.tar.zst \
-  --repo FXTi/arkcompiler-test \
-  --title "ArkCompiler tools v1" \
-  --notes "x64.release tools and selected corpus provenance"
+make build
 ```
 
-The release must contain exactly `arkcompiler-test-tools.tar.zst`. Publishing it runs
-`.github/workflows/publish-image.yml`; it can also be started from the Actions page,
-or with:
+Log in to the target registry using its normal Docker credentials. For GHCR:
 
 ```sh
-gh workflow run publish-image.yml --repo FXTi/arkcompiler-test \
-  -f tools_release=tools-v1
+echo "$CR_PAT" | docker login ghcr.io -u FXTi --password-stdin
+make push IMAGE_REF=ghcr.io/FXTi/arkcompiler-test IMAGE_TAG=v1
 ```
 
-The workflow downloads the pinned asset, builds and validates `linux/amd64`, logs in
-to GHCR using the automatic `GITHUB_TOKEN`, and pushes:
+`make build` generates and verifies the complete corpus inside Docker. `make push`
+only tags and pushes an already-built image; it does not rebuild or silently choose a
+registry. A local push therefore produces:
 
 ```text
-ghcr.io/fxti/arkcompiler-test:tools-v1
-ghcr.io/fxti/arkcompiler-test:sha-<commit>
+ghcr.io/FXTi/arkcompiler-test:v1
 ```
 
-For a non-prerelease GitHub Release it also updates `:latest`. Make the GHCR package
-public in GitHub package settings if consumers should pull it without credentials.
-CI never SSHes to the build machine and never receives ignored source/toolchain dirs.
+Make the GHCR package public in GitHub package settings if consumers should pull it
+without credentials. The repository keeps a lightweight source check workflow, but
+the image build and push do not depend on GitHub Actions.
 
 ## License
 

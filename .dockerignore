@@ -1,0 +1,6 @@
+**
+!Dockerfile
+!.stage/
+!.stage/**
+!app/
+!app/**

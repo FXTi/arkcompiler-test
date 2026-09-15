@@ -1,0 +1,9 @@
+/OpenHarmony-*
+/openharmony_prebuilts/
+/repo
+/.stage/
+/exports/
+__pycache__/
+*.pyc
+.DS_Store
+._*

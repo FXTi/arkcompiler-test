@@ -1,0 +1,5 @@
+{
+  "baseline": ["--opt-level=0"],
+  "debug-info": ["--opt-level=0", "--debug-info"],
+  "optimized": ["--opt-level=2"]
+}

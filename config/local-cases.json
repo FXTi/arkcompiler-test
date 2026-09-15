@@ -1,0 +1,161 @@
+[
+  {
+    "id": "local/arithmetic",
+    "source": "local/arithmetic.js",
+    "tags": [
+      "ir",
+      "calls",
+      "arithmetic"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "42\n"
+  },
+  {
+    "id": "local/control-flow",
+    "source": "local/control-flow.js",
+    "tags": [
+      "ir",
+      "phi",
+      "loops",
+      "branches"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "-5\n"
+  },
+  {
+    "id": "local/closure",
+    "source": "local/closure.js",
+    "tags": [
+      "ir",
+      "closure",
+      "lexical-env"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "12\n15\n"
+  },
+  {
+    "id": "local/exception-finally",
+    "source": "local/exception-finally.js",
+    "tags": [
+      "file",
+      "ir",
+      "exceptions"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "finally\n3\nfinally\n8\n"
+  },
+  {
+    "id": "local/strings",
+    "source": "local/strings.js",
+    "tags": [
+      "file",
+      "strings",
+      "mutf8"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "7\n0\n55357\n"
+  },
+  {
+    "id": "local/literals",
+    "source": "local/literals.js",
+    "tags": [
+      "file",
+      "literal-array",
+      "numeric"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "2.5\nx\nfalse\ntrue\n"
+  },
+  {
+    "id": "local/class-accessors",
+    "source": "local/class-accessors.js",
+    "tags": [
+      "file",
+      "classes",
+      "accessors",
+      "calls"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "16\n"
+  },
+  {
+    "id": "local/generator",
+    "source": "local/generator.js",
+    "tags": [
+      "isa",
+      "generator",
+      "suspend"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "2\n3\n4\n"
+  },
+  {
+    "id": "local/typescript-enum",
+    "source": "local/typescript-enum.ts",
+    "tags": [
+      "file",
+      "typescript",
+      "literal-array"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "6\n"
+  },
+  {
+    "id": "local/module-exports",
+    "source": "local/module-exports.js",
+    "tags": [
+      "file",
+      "module",
+      "exports"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "42\n",
+    "mode": "module"
+  },
+  {
+    "id": "local/module-imports",
+    "source": "local/module-imports.js",
+    "tags": [
+      "file",
+      "module",
+      "imports",
+      "reexports"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "runtime_reason": "Unresolved import records are intentional file-format fixtures; no linked dependency ABC.",
+    "mode": "module"
+  }
+]

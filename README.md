@@ -62,6 +62,14 @@ compiled for all six versions and profiles when its declared compiler mode suppo
 Tags identify `file`, `isa`, `ir` and feature coverage. This is a direct-use compiler
 corpus, not an assertion of complete ISA coverage.
 
+The six `ets_runtime/test/executiontest/js` inputs are included as structural
+compiler cases; they call OpenHarmony-only host functions such as `terminate` and
+`signal`, so they are not assigned a VM oracle. The runtime regression directory is
+runner/configuration data rather than standalone source. Likewise, `testTs` is
+mostly expected-text output, not 402 independent TypeScript inputs, and is not
+mislabelled as executable corpus. The image also contains the 66 directly useful
+`.pa` references from runtime-core `checked` and `regression` under `corpus/pandasm/`.
+
 Upstream expected stdout is used where available. Project fixtures have authored
 expected stdout; outputs are never approved merely because Ark produced them.
 Sources with intentional unresolved imports or throwing constructors are explicitly

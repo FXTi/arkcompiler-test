@@ -36,6 +36,7 @@ def main():
         if subprocess.check_output(["git", "-C", str(component), "diff", "HEAD", "--"], text=True):
             raise ValueError("upstream tracked source is dirty: " + name)
     files = {}
+    source_locations = {}
     overrides = {e["path"]: e for e in json.loads((REPO / "config/upstream-cases.json").read_text())}
     # These are the direct source inputs in the three agreed compiler suites.
     # Expected-output files, harnesses and C++ tests are deliberately excluded.
@@ -44,10 +45,18 @@ def main():
         candidate_paths += sorted((test / suite).rglob("*.js"))
         candidate_paths += sorted((test / suite).rglob("*.ts"))
     candidate_paths = [p for p in candidate_paths if "-expected" not in p.stem]
+    runtime_test = oh / "arkcompiler/ets_runtime/test/executiontest/js"
+    candidate_paths += sorted(runtime_test.glob("*.js"))
     for source in candidate_paths:
-        relative = str(source.relative_to(test))
+        try:
+            relative = str(source.relative_to(test))
+            component, suite_path = "ets_frontend", "es2panda/test/" + relative
+        except ValueError:
+            relative = "ets_runtime/test/executiontest/js/" + source.name
+            component, suite_path = "ets_runtime", relative
         entry = overrides.get(relative, {})
         files[relative] = sha(source)
+        source_locations[relative] = source
         tags = entry.get("tags", [relative.split("/", 1)[0], "upstream"])
         mode = entry.get("mode", "module" if relative.endswith((".js", ".ts")) and
                               any(line.lstrip().startswith(("import ", "export "))
@@ -56,9 +65,9 @@ def main():
             mode = "commonjs"
         case = {"id": "upstream/" + str(Path(relative).with_suffix("")),
                 "source": "upstream/" + relative, "tags": tags,
-                "origin": {"kind": "upstream", "component": "ets_frontend",
-                           "revision": revisions["ets_frontend"],
-                           "path": "es2panda/test/" + relative, "license": "Apache-2.0"},
+                "origin": {"kind": "upstream", "component": component,
+                           "revision": revisions[component], "path": suite_path,
+                           "license": "Apache-2.0"},
                 "mode": mode}
         for key in ["mode", "expected_stdout", "runtime_reason", "versions", "profiles"]:
             if key in entry:
@@ -100,10 +109,23 @@ def main():
                                  .replace(str(oh) + "/", "<build>/")}
     sources = stage / "sources"
     shutil.copytree(REPO / "cases", sources / "local")
-    for rel in files:
+    for rel, source in source_locations.items():
         dst = sources / "upstream" / rel
         dst.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(test / rel, dst)
+        shutil.copy2(source, dst)
+    pandasm = stage / "pandasm"
+    pandasm.mkdir()
+    pandasm_index = []
+    for root in [oh / "arkcompiler/runtime_core/tests/checked",
+                 oh / "arkcompiler/runtime_core/tests/regression"]:
+        for source in sorted(root.rglob("*.pa")):
+            rel = str(source.relative_to(oh / "arkcompiler"))
+            dst = pandasm / rel
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, dst)
+            pandasm_index.append({"path": rel, "sha256": sha(source),
+                                  "origin": "runtime_core", "license": "Apache-2.0"})
+    write(pandasm / "index.json", {"schema_version": 1, "files": pandasm_index})
     for name in ["versions.json", "profiles.json"]:
         shutil.copy2(REPO / "config" / name, stage / name)
     # Keep notices with copied source and statically linked third-party code.

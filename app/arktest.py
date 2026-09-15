@@ -95,6 +95,8 @@ def generate():
     if corpus.exists():
         raise ValueError("corpus already exists; use a clean staging tree")
     corpus.mkdir()
+    if (ROOT / "pandasm").exists():
+        shutil.copytree(ROOT / "pandasm", corpus / "pandasm")
     write_json(corpus / "build-info.json", read_json(ROOT / "build-info.json"))
     write_json(corpus / "versions.json", versions)
     write_json(corpus / "profiles.json", profiles)

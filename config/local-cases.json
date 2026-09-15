@@ -555,5 +555,34 @@
       "license": "Apache-2.0"
     },
     "expected_stdout": "3\n2\n1\n"
+  },
+  {
+    "id": "local/wide-registers",
+    "source": "local/wide-registers.js",
+    "tags": [
+      "isa",
+      "wide",
+      "registers"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "299\n"
+  },
+  {
+    "id": "local/wide-call",
+    "source": "local/wide-call.js",
+    "tags": [
+      "isa",
+      "wide",
+      "calls",
+      "range"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "300\n"
   }
 ]

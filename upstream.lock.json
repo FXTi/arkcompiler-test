@@ -1,5 +1,6 @@
 {
   "isa_sha256": "690d960793e07d18c94d81a644e916592bb29962c48c7e2f5f48376989f530f9",
+  "manifest_tag": "OpenHarmony-7.0-Release",
   "revisions": {
     "ets_frontend": "c754cf6300873cdd8cdb71c7340a98abfd885389",
     "ets_runtime": "8435c34f27dc77fdead2c7974ed6950fe9b81208",
@@ -157,5 +158,12 @@
     "version_control/API20/bytecode_feature/annotations.ts": "9149e66ef88b85890cdaf873e565afe7501fefcaa7e24b362536114ffc235591",
     "version_control/API20/bytecode_feature/export_annotations.ts": "1b2c54acb00902acd9efcae704bb89638bcd3fc93509d74bb552fbdee022a2fd",
     "version_control/API24/bytecode_feature/call_this_range_with_name.js": "df3d305a0f425d8e4221c7b802ebd9917c2f5c86d749417efbe2138768b4fc50"
+  },
+  "test262": {
+    "ci_list": "arkcompiler/ets_frontend/test262/CI_tests.txt",
+    "ci_list_sha256": "7382f420ca4178942b5a7448a9e5d0df7795d29f3ff252d5f261ad2202fb41f5",
+    "commit": "747bed2e8aaafe8fdf2c65e8a10dd7ae64f66c47",
+    "tests": 3963,
+    "tree": "108f92392a2eb006170782c598a3336617715b87"
   }
 }

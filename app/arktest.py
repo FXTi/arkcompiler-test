@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import multiprocessing
 import os
 from pathlib import Path
 import shutil
@@ -88,6 +89,46 @@ def selected(rows, version=None, case=None, profile=None):
             and (profile is None or r["profile"] == profile)]
 
 
+def fixture_job(job):
+    """Build one fixture in its own (version/case/profile) directory.
+
+    Worker for the generate() pool: returns (index, row, None) on success or
+    (index, None, error) on failure so the parent can report every failure.
+    """
+    case, v, profile = job["case"], job["version"], job["profile"]
+    corpus = ROOT / "corpus"
+    try:
+        rel = Path(v) / case["id"] / profile
+        dest = corpus / rel
+        dest.mkdir(parents=True, exist_ok=True)
+        source = "sources/" + case["source"]
+        c = compile_one(source, dest / "input.abc", v, profile,
+                        case.get("mode", "script"), cwd=corpus,
+                        extra_args=case.get("compile_args", []))
+        d = call("ark_disasm", [dest / "input.abc", dest / "reference.pa"])
+        require_ok(d)
+        if not (dest / "reference.pa").stat().st_size:
+            raise ValueError("empty disassembly: " + case["id"])
+        row = {"schema_version": 1, "case": case["id"], "version": v,
+               "profile": profile, "source": source, "tags": case["tags"],
+               "origin": case["origin"], "abc": str(rel / "input.abc"),
+               "pandasm": str(rel / "reference.pa"), "header": c["abc"],
+               "source_sha256": digest(corpus / source),
+               "pandasm_sha256": digest(dest / "reference.pa"),
+               "compile": c, "disassemble": d,
+               "runtime": {"status": "not-applicable", "reason": case.get("runtime_reason", "structural fixture")}}
+        if "expected_stdout" in case:
+            r = call("ark_js_vm", [dest / "input.abc"], cwd=corpus)
+            require_ok(r)
+            if r["stdout"] != case["expected_stdout"] or r["stderr"]:
+                raise ValueError("runtime oracle mismatch " + str(rel) + ": " + str(r))
+            row["runtime"] = {"status": "passed", **r}
+        write_json(dest / "metadata.json", row)
+        return (job["index"], row, None)
+    except (ValueError, RuntimeError, OSError, KeyError) as e:
+        return (job["index"], None, "%s (%s/%s/%s)" % (e, case["id"], v, profile))
+
+
 def generate():
     versions = read_json(ROOT / "versions.json")
     profiles = read_json(ROOT / "profiles.json")
@@ -102,44 +143,44 @@ def generate():
     write_json(corpus / "versions.json", versions)
     write_json(corpus / "profiles.json", profiles)
     shutil.copytree(ROOT / "sources", corpus / "sources")
-    rows = []
     # Confirm the command-line map AND each generated file's actual header.
     for v, flags in versions.items():
         r = call("es2abc", flags + ["--target-bc-version"])
         require_ok(r)
         if r["stdout"].strip() != v:
             raise ValueError("target-bc-version mismatch: " + str(r))
+    jobs = []
     for case in cases:
         for v in case.get("versions", versions):
             for profile in case.get("profiles", profiles):
-                rel = Path(v) / case["id"] / profile
-                dest = corpus / rel
-                dest.mkdir(parents=True)
-                source = "sources/" + case["source"]
-                c = compile_one(source, dest / "input.abc", v, profile,
-                                case.get("mode", "script"), cwd=corpus,
-                                extra_args=case.get("compile_args", []))
-                d = call("ark_disasm", [dest / "input.abc", dest / "reference.pa"])
-                require_ok(d)
-                if not (dest / "reference.pa").stat().st_size:
-                    raise ValueError("empty disassembly: " + case["id"])
-                row = {"schema_version": 1, "case": case["id"], "version": v,
-                       "profile": profile, "source": source, "tags": case["tags"],
-                       "origin": case["origin"], "abc": str(rel / "input.abc"),
-                       "pandasm": str(rel / "reference.pa"), "header": c["abc"],
-                       "source_sha256": digest(corpus / source),
-                       "pandasm_sha256": digest(dest / "reference.pa"),
-                       "compile": c, "disassemble": d,
-                       "runtime": {"status": "not-applicable", "reason": case.get("runtime_reason", "structural fixture")}}
-                if "expected_stdout" in case:
-                    r = call("ark_js_vm", [dest / "input.abc"], cwd=corpus)
-                    require_ok(r)
-                    if r["stdout"] != case["expected_stdout"] or r["stderr"]:
-                        raise ValueError("runtime oracle mismatch " + str(rel) + ": " + str(r))
-                    row["runtime"] = {"status": "passed", **r}
-                write_json(dest / "metadata.json", row)
-                rows.append(row)
-        print("generated " + case["id"], flush=True)
+                jobs.append({"index": len(jobs), "case": case,
+                             "version": v, "profile": profile})
+    workers = int(os.environ.get("ARK_TEST_JOBS", "0")) or (os.cpu_count() or 1)
+    rows = [None] * len(jobs)
+    failures = []
+    progress = [0]
+
+    def collect(results):
+        for index, row, error in results:
+            progress[0] += 1
+            if error is not None:
+                failures.append((index, error))
+            else:
+                rows[index] = row
+            if progress[0] % 200 == 0 or progress[0] == len(jobs):
+                print("generated %d/%d fixtures" % (progress[0], len(jobs)), flush=True)
+
+    if workers > 1 and len(jobs) > 1:
+        with multiprocessing.Pool(workers) as pool:
+            collect(pool.imap_unordered(fixture_job, jobs, chunksize=4))
+    else:
+        collect(map(fixture_job, jobs))
+    if failures:
+        for index, error in failures:
+            print("fixture job %d failed: %s" % (index, error), file=sys.stderr)
+        raise RuntimeError("%d of %d fixture jobs failed" % (len(failures), len(jobs)))
+    # Row order follows job enumeration order, not completion order: the
+    # index is byte-identical to a serial run.
     (corpus / "index.jsonl").write_text("".join(json.dumps(r, sort_keys=True) + "\n" for r in rows))
     write_json(corpus / "summary.json", {"schema_version": 1, "cases": len(cases),
                "fixtures": len(rows), "versions": list(versions),

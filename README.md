@@ -31,9 +31,14 @@ verbatim upstream inputs/expected outputs and third-party license notices.
 The image uses Linux/amd64 Ubuntu 22.04 with `libstdc++6` (the tools require
 GLIBCXX_3.4.30; a plain Ubuntu 20.04 runtime is insufficient). Docker first installs
 runtime dependencies, then generates and validates the entire corpus inside the
-image. The final stage contains the completed corpus. Compilation or oracle failure
-fails the build; no failed fixtures are silently skipped. Building may need network
-access for the base image and apt; using the finished image does not.
+image. The final stage contains the completed corpus. Generation fans the
+(case × version × profile) jobs out to a worker pool (`ARK_TEST_JOBS` overrides
+the worker count; the default is all cores) and the resulting corpus is
+byte-identical to a serial run. Compilation or oracle failure fails the build —
+all failures are collected and reported; no failed fixtures are silently skipped.
+Building may need network access for the base image and apt; using the finished
+image does not. `prepare.py` also downloads the pinned test262 tarball (network
+at prepare time only).
 
 ## Version contract
 
@@ -61,6 +66,31 @@ accessors/inheritance, generators, enums, module exports/imports. Each source is
 compiled for all six versions and profiles when its declared compiler mode supports it.
 Tags identify `file`, `isa`, `ir` and feature coverage. This is a direct-use compiler
 corpus, not an assertion of complete ISA coverage.
+
+The corpus also contains a test262 P0 subset: arkcompiler's own curated CI list
+(`arkcompiler/ets_frontend/test262/CI_tests.txt`, 3,968 entries) run against
+`tc39/test262` pinned at commit `747bed2e8aaafe8fdf2c65e8a10dd7ae64f66c47`
+(BSD-3-Clause; the license text ships under `licenses/test262-LICENSE`, and the pin
+plus the verified git tree hash live in `upstream.lock.json`). Each test is
+preprocessed per upstream INTERPRETING rules: `harness/sta.js` and
+`harness/assert.js` are inlined and a single strict-mode pass is produced by
+prepending `"use strict";`. Tests needing more than that are counted skip buckets,
+never silent drops: `skipped-flags` (`raw`/`noStrict`), `skipped-module`,
+`skipped-async`, `skipped-includes` (any `includes:` beyond sta/assert) and
+`skipped-missing` (CI-list entries absent at the pinned commit). Compilable tests
+are built at `24.0.0.0`/`baseline` only, disassembled, and run once under
+`ark_js_vm` with the raw exit/stdout/stderr/timeout recorded
+(`runtime.status == "recorded"` — a behavior record, not a test262 conformance
+claim). es2abc rejections are expected-behavior signals: `negative.phase: parse`
+tests land in `expected-negative-parse` with an `agreement` field comparing the
+stderr error type against the declared one; other rejections land in
+`es2abc-cant`. Every bucket is counted in `corpus/summary.json`.
+
+Forty taint-analysis probes (`cases/probes/`, from abcd-rs `probes-taint`) and five
+`yield*` delegation fixtures (`cases/yield-star/`, from abcd-rs
+`decompile-fixtures/yield-star`) are included as project (Apache-2.0) structural
+cases — compile + disassemble only — pinned to `24.0.0.0`/`baseline` to keep the
+corpus volume flat.
 
 `version_control/` source cases are included with their upstream API-specific target
 arguments. This preserves real version gating for API11, API12 beta1, API12 beta3,
@@ -154,9 +184,30 @@ be called directly with `docker run --entrypoint es2abc arkcompiler-test --help`
 
 ## CI and reproducibility
 
-Use an image ID/digest in consuming CI, not a mutable `latest` reference. Export
-once per job, run Rust fixture tests, then invoke `compare` on rewritten artifacts.
-Retain failed candidate ABC, the corresponding manifest row and raw PA as CI artifacts.
+**CI is radar-only; build/publish is a human act on dabai.** GitHub Actions never
+builds or publishes the image. `.github/workflows/upstream-radar.yml` runs weekly
+(Monday 00:00 UTC, plus `workflow_dispatch`) and polls the OpenHarmony manifest
+repo (`gitee.com/ark_standalone_build/manifest`) for the newest `OpenHarmony-*`
+ref by tip committer date. Drift against `upstream.lock.json`'s `manifest_tag`
+produces ONE standing PR per ref (closing it means wont-port) containing the human
+checklist below; radar infrastructure failures produce ONE standing issue. The
+radar never gates, never builds, never syncs and never auto-merges. The remaining
+CI job (`check.yml`) only compiles the Python and runs the header unit tests.
+
+When the radar (or a human) accepts a new manifest ref, the manual flow is:
+
+1. Sync the monorepo on dabai (`repo init -b <ref>` / `repo sync` in the checkout).
+2. `python3 ark.py x64.release es2panda ark_disasm ark_js_vm -j8`.
+3. `python3 scripts/prepare.py --update-lock`; review and commit the lock changes.
+4. `make build && make test`.
+5. Merge the PR so main carries the new lock.
+6. `make push` to publish the image.
+7. Bump the pinned image digest in abcd-rs.
+
+Digest discipline: consumers pin the image by digest
+(`ghcr.io/fxti/arkcompiler-test@sha256:...`), never `:latest`. Export once per job,
+run Rust fixture tests, then invoke `compare` on rewritten artifacts. Retain failed
+candidate ABC, the corresponding manifest row and raw PA as CI artifacts.
 `make test` exercises the image offline, with a read-only root filesystem and a
 non-root user: all oracles, six-version export, altered-output mismatch, incorrect
 version, timeout and corrupted fixture rejection.
@@ -207,8 +258,9 @@ without credentials. The image build and push do not depend on GitHub Actions.
 - Add normalized-pandasm comparison and an `ark_asm` producer if an assembler is
   built; current `.pa` files are reference-only.
 - Expand runtime oracle expectations for async scheduling and OpenHarmony host APIs.
-- Revisit TypeScript expected-text conformance and Test262 after defining a
-  standalone harness and redistribution policy.
+- Revisit TypeScript expected-text conformance; widen test262 beyond the P0 list
+  (per-test `includes:`, `async` and `module` flags, non-strict pass) after defining
+  harness composition and volume budgets.
 
 ## License
 

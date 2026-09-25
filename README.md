@@ -68,7 +68,7 @@ Tags identify `file`, `isa`, `ir` and feature coverage. This is a direct-use com
 corpus, not an assertion of complete ISA coverage.
 
 The corpus also contains a test262 P0 subset: arkcompiler's own curated CI list
-(`arkcompiler/ets_frontend/test262/CI_tests.txt`, 3,968 entries) run against
+(`arkcompiler/ets_frontend/test262/CI_tests.txt`, 3,968 entries — 3,963 after deduplicating 5 repeats in the list itself) run against
 `tc39/test262` pinned at commit `747bed2e8aaafe8fdf2c65e8a10dd7ae64f66c47`
 (BSD-3-Clause; the license text ships under `licenses/test262-LICENSE`, and the pin
 plus the verified git tree hash live in `upstream.lock.json`). Each test is

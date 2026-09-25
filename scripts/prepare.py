@@ -334,6 +334,9 @@ def main():
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, dst)
     stage_test262(checkout, test262_tree, frontend, sources, cases)
+    # The image is consumed as a non-root user; never propagate host umasks.
+    for path in sorted(sources.rglob("*")):
+        path.chmod(0o755 if path.is_dir() else 0o644)
     ids = [c["id"] for c in cases]
     if len(ids) != len(set(ids)):
         raise ValueError("duplicate case IDs")

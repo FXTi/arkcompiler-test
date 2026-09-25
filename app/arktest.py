@@ -3,8 +3,10 @@
 import argparse
 import hashlib
 import json
+import multiprocessing
 import os
 from pathlib import Path
+import re
 import shutil
 import struct
 import subprocess
@@ -62,7 +64,8 @@ def require_ok(result):
         raise RuntimeError(json.dumps(result, ensure_ascii=True))
 
 
-def compile_one(source, output, version, profile, mode="script", cwd=None, extra_args=None):
+def compile_raw(source, output, version, profile, mode="script", cwd=None, extra_args=None):
+    """Invoke es2abc and return the raw result record without raising on failure."""
     versions = read_json(ROOT / "versions.json")
     profiles = read_json(ROOT / "profiles.json")
     output = Path(output).resolve()
@@ -74,7 +77,11 @@ def compile_one(source, output, version, profile, mode="script", cwd=None, extra
     if mode != "script":
         args += ["--" + mode]
     args += list(extra_args or [])
-    result = call("es2abc", args + ["--output=" + str(output), str(source)], cwd=cwd)
+    return call("es2abc", args + ["--output=" + str(output), str(source)], cwd=cwd)
+
+
+def compile_one(source, output, version, profile, mode="script", cwd=None, extra_args=None):
+    result = compile_raw(source, output, version, profile, mode, cwd, extra_args)
     require_ok(result)
     result["abc"] = inspect(output)
     if result["abc"]["version"] != version:
@@ -86,6 +93,89 @@ def selected(rows, version=None, case=None, profile=None):
     return [r for r in rows if (version is None or r["version"] == version)
             and (case is None or r["case"] == case)
             and (profile is None or r["profile"] == profile)]
+
+
+def test262_fixture(job, dest, rel, source):
+    """Build one preprocessed test262 case. es2abc rejection is a counted
+    bucket, not a build failure; runtime output is recorded raw."""
+    case, v, profile = job["case"], job["version"], job["profile"]
+    corpus = ROOT / "corpus"
+    c = compile_raw(source, dest / "input.abc", v, profile,
+                    case.get("mode", "script"), cwd=corpus,
+                    extra_args=case.get("compile_args", []))
+    row = {"schema_version": 1, "case": case["id"], "version": v,
+           "profile": profile, "source": source, "tags": case["tags"],
+           "origin": case["origin"], "test262": case["test262"],
+           "source_sha256": digest(corpus / source), "compile": c}
+    if c["exit_code"] != 0 or c["timeout"]:
+        negative = case["test262"].get("negative") or {}
+        if negative.get("phase") == "parse":
+            declared = negative.get("type", "")
+            match = re.search(r"\b[A-Za-z]*Error\b", c["stderr"])
+            row["bucket"] = "expected-negative-parse"
+            row["agreement"] = bool(match) and match.group(0) == declared
+            row["declared_type"] = declared
+            row["stderr_error_type"] = match.group(0) if match else None
+        else:
+            row["bucket"] = "es2abc-cant"
+        shutil.rmtree(dest)
+        return row
+    c["abc"] = inspect(dest / "input.abc")
+    if c["abc"]["version"] != v:
+        raise ValueError("compiler emitted wrong version: " + str(c))
+    d = call("ark_disasm", [dest / "input.abc", dest / "reference.pa"])
+    require_ok(d)
+    if not (dest / "reference.pa").stat().st_size:
+        raise ValueError("empty disassembly: " + case["id"])
+    r = call("ark_js_vm", [dest / "input.abc"], cwd=corpus)
+    row.update({"bucket": "compiled", "abc": str(rel / "input.abc"),
+                "pandasm": str(rel / "reference.pa"), "header": c["abc"],
+                "pandasm_sha256": digest(dest / "reference.pa"),
+                "disassemble": d, "runtime": {"status": "recorded", **r}})
+    write_json(dest / "metadata.json", row)
+    return row
+
+
+def fixture_job(job):
+    """Build one fixture in its own (version/case/profile) directory.
+
+    Worker for the generate() pool: returns (index, row, None) on success or
+    (index, None, error) on failure so the parent can report every failure.
+    """
+    case, v, profile = job["case"], job["version"], job["profile"]
+    corpus = ROOT / "corpus"
+    try:
+        rel = Path(v) / case["id"] / profile
+        dest = corpus / rel
+        dest.mkdir(parents=True, exist_ok=True)
+        source = "sources/" + case["source"]
+        if case["origin"].get("kind") == "test262":
+            return (job["index"], test262_fixture(job, dest, rel, source), None)
+        c = compile_one(source, dest / "input.abc", v, profile,
+                        case.get("mode", "script"), cwd=corpus,
+                        extra_args=case.get("compile_args", []))
+        d = call("ark_disasm", [dest / "input.abc", dest / "reference.pa"])
+        require_ok(d)
+        if not (dest / "reference.pa").stat().st_size:
+            raise ValueError("empty disassembly: " + case["id"])
+        row = {"schema_version": 1, "case": case["id"], "version": v,
+               "profile": profile, "source": source, "tags": case["tags"],
+               "origin": case["origin"], "abc": str(rel / "input.abc"),
+               "pandasm": str(rel / "reference.pa"), "header": c["abc"],
+               "source_sha256": digest(corpus / source),
+               "pandasm_sha256": digest(dest / "reference.pa"),
+               "compile": c, "disassemble": d,
+               "runtime": {"status": "not-applicable", "reason": case.get("runtime_reason", "structural fixture")}}
+        if "expected_stdout" in case:
+            r = call("ark_js_vm", [dest / "input.abc"], cwd=corpus)
+            require_ok(r)
+            if r["stdout"] != case["expected_stdout"] or r["stderr"]:
+                raise ValueError("runtime oracle mismatch " + str(rel) + ": " + str(r))
+            row["runtime"] = {"status": "passed", **r}
+        write_json(dest / "metadata.json", row)
+        return (job["index"], row, None)
+    except (ValueError, RuntimeError, OSError, KeyError) as e:
+        return (job["index"], None, "%s (%s/%s/%s)" % (e, case["id"], v, profile))
 
 
 def generate():
@@ -102,48 +192,59 @@ def generate():
     write_json(corpus / "versions.json", versions)
     write_json(corpus / "profiles.json", profiles)
     shutil.copytree(ROOT / "sources", corpus / "sources")
-    rows = []
     # Confirm the command-line map AND each generated file's actual header.
     for v, flags in versions.items():
         r = call("es2abc", flags + ["--target-bc-version"])
         require_ok(r)
         if r["stdout"].strip() != v:
             raise ValueError("target-bc-version mismatch: " + str(r))
+    jobs = []
     for case in cases:
+        if case.get("skip"):
+            continue  # counted below as a skipped-* bucket, never generated
         for v in case.get("versions", versions):
             for profile in case.get("profiles", profiles):
-                rel = Path(v) / case["id"] / profile
-                dest = corpus / rel
-                dest.mkdir(parents=True)
-                source = "sources/" + case["source"]
-                c = compile_one(source, dest / "input.abc", v, profile,
-                                case.get("mode", "script"), cwd=corpus,
-                                extra_args=case.get("compile_args", []))
-                d = call("ark_disasm", [dest / "input.abc", dest / "reference.pa"])
-                require_ok(d)
-                if not (dest / "reference.pa").stat().st_size:
-                    raise ValueError("empty disassembly: " + case["id"])
-                row = {"schema_version": 1, "case": case["id"], "version": v,
-                       "profile": profile, "source": source, "tags": case["tags"],
-                       "origin": case["origin"], "abc": str(rel / "input.abc"),
-                       "pandasm": str(rel / "reference.pa"), "header": c["abc"],
-                       "source_sha256": digest(corpus / source),
-                       "pandasm_sha256": digest(dest / "reference.pa"),
-                       "compile": c, "disassemble": d,
-                       "runtime": {"status": "not-applicable", "reason": case.get("runtime_reason", "structural fixture")}}
-                if "expected_stdout" in case:
-                    r = call("ark_js_vm", [dest / "input.abc"], cwd=corpus)
-                    require_ok(r)
-                    if r["stdout"] != case["expected_stdout"] or r["stderr"]:
-                        raise ValueError("runtime oracle mismatch " + str(rel) + ": " + str(r))
-                    row["runtime"] = {"status": "passed", **r}
-                write_json(dest / "metadata.json", row)
-                rows.append(row)
-        print("generated " + case["id"], flush=True)
+                jobs.append({"index": len(jobs), "case": case,
+                             "version": v, "profile": profile})
+    workers = int(os.environ.get("ARK_TEST_JOBS", "0")) or (os.cpu_count() or 1)
+    rows = [None] * len(jobs)
+    failures = []
+    progress = [0]
+
+    def collect(results):
+        for index, row, error in results:
+            progress[0] += 1
+            if error is not None:
+                failures.append((index, error))
+            else:
+                rows[index] = row
+            if progress[0] % 200 == 0 or progress[0] == len(jobs):
+                print("generated %d/%d fixtures" % (progress[0], len(jobs)), flush=True)
+
+    if workers > 1 and len(jobs) > 1:
+        with multiprocessing.Pool(workers) as pool:
+            collect(pool.imap_unordered(fixture_job, jobs, chunksize=4))
+    else:
+        collect(map(fixture_job, jobs))
+    if failures:
+        for index, error in failures:
+            print("fixture job %d failed: %s" % (index, error), file=sys.stderr)
+        raise RuntimeError("%d of %d fixture jobs failed" % (len(failures), len(jobs)))
+    # Row order follows job enumeration order, not completion order: the
+    # index is byte-identical to a serial run.
     (corpus / "index.jsonl").write_text("".join(json.dumps(r, sort_keys=True) + "\n" for r in rows))
+    buckets = {}
+    for row in rows:
+        bucket = row.get("bucket", "compiled")
+        buckets[bucket] = buckets.get(bucket, 0) + 1
+    for case in cases:
+        if case.get("skip"):
+            bucket = "skipped-" + case["skip"]
+            buckets[bucket] = buckets.get(bucket, 0) + 1
     write_json(corpus / "summary.json", {"schema_version": 1, "cases": len(cases),
                "fixtures": len(rows), "versions": list(versions),
-               "runtime_checked": sum(r["runtime"]["status"] == "passed" for r in rows)})
+               "runtime_checked": sum(r.get("runtime", {}).get("status") == "passed" for r in rows),
+               "buckets": dict(sorted(buckets.items()))})
 
 
 def index(root):
@@ -167,6 +268,12 @@ def verify(root, execute=False):
         if key in seen:
             raise ValueError("duplicate fixture: " + str(key))
         seen.add(key)
+        if "abc" not in row:
+            if row.get("bucket") not in ("es2abc-cant", "expected-negative-parse"):
+                raise ValueError("artifact-less row outside compile-failure buckets: " + str(key))
+            if digest(safe_path(root, row["source"])) != row["source_sha256"]:
+                raise ValueError("hash mismatch: " + row["source"])
+            continue
         abc = safe_path(root, row["abc"])
         if inspect(abc) != row["header"] or row["header"]["version"] != row["version"]:
             raise ValueError("header/hash mismatch: " + str(abc))
@@ -194,6 +301,8 @@ def export(dest, version=None, case=None, profile=None):
         raise ValueError("export destination must be empty")
     dest.mkdir(parents=True, exist_ok=True)
     for row in rows:
+        if "abc" not in row:
+            continue  # compile-failure records carry no artifacts to export
         for rel in [row["source"], row["abc"], row["pandasm"],
                     str(Path(row["abc"]).parent / "metadata.json")]:
             target = dest / rel
@@ -202,6 +311,7 @@ def export(dest, version=None, case=None, profile=None):
     for name in ["build-info.json", "versions.json", "profiles.json"]:
         shutil.copyfile(corpus / name, dest / name)
     shutil.copytree(ROOT / "licenses", dest / "licenses")
+    rows = [r for r in rows if "abc" in r]
     (dest / "index.jsonl").write_text("".join(json.dumps(r, sort_keys=True) + "\n" for r in rows))
     return verify(dest)
 

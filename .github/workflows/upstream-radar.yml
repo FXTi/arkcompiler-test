@@ -1,0 +1,55 @@
+name: upstream-radar
+
+# Weekly drift radar for the OpenHarmony manifest repo. CI is radar-only:
+# it never builds, never gates and never auto-merges. Drift produces ONE
+# standing PR per manifest ref (closing it means wont-port); infrastructure
+# failures produce ONE standing issue.
+
+on:
+  schedule:
+    - cron: "0 0 * * 1" # Monday 00:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+env:
+  MANIFEST_REPO: https://gitee.com/ark_standalone_build/manifest
+  ISSUE_TITLE: "upstream-radar: infrastructure failure"
+
+jobs:
+  poll:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Poll manifest refs and resolve drift
+        id: radar
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 scripts/upstream-radar.py
+
+      - name: Open/update the standing infra-failure issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          existing=$(gh issue list --state all --search "in:title \"$ISSUE_TITLE\"" --json number,state,title -q '.[] | select(.title == "'"$ISSUE_TITLE"'") | [.number, .state] | @tsv' | head -1 || true)
+          number=$(echo "${existing:-}" | cut -f1)
+          state=$(echo "${existing:-}" | cut -f2)
+          body="The upstream radar run failed: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+
+          This issue is updated by .github/workflows/upstream-radar.yml on every infrastructure failure. Close it once the radar is green again."
+          if [ -n "${number}" ] && [ "${state}" = "OPEN" ]; then
+            gh issue comment "${number}" --body "${body}"
+          elif [ -n "${number}" ]; then
+            gh issue reopen "${number}" || true
+            gh issue comment "${number}" --body "${body}"
+          else
+            gh issue create --title "${ISSUE_TITLE}" --body "${body}"
+          fi

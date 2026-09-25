@@ -584,5 +584,865 @@
       "license": "Apache-2.0"
     },
     "expected_stdout": "300\n"
+  },
+  {
+    "id": "local/yield-star/delegate-array",
+    "source": "local/yield-star/delegate-array.js",
+    "tags": [
+      "yield-star",
+      "generators",
+      "delegation"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "decompile fixture; structural only"
+  },
+  {
+    "id": "local/yield-star/delegate-async",
+    "source": "local/yield-star/delegate-async.js",
+    "tags": [
+      "yield-star",
+      "generators",
+      "delegation"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "decompile fixture; structural only"
+  },
+  {
+    "id": "local/yield-star/delegate-gen",
+    "source": "local/yield-star/delegate-gen.js",
+    "tags": [
+      "yield-star",
+      "generators",
+      "delegation"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "decompile fixture; structural only"
+  },
+  {
+    "id": "local/yield-star/delegate-throw",
+    "source": "local/yield-star/delegate-throw.js",
+    "tags": [
+      "yield-star",
+      "generators",
+      "delegation"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "decompile fixture; structural only"
+  },
+  {
+    "id": "local/yield-star/manual-iterator",
+    "source": "local/yield-star/manual-iterator.js",
+    "tags": [
+      "yield-star",
+      "generators",
+      "delegation"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "decompile fixture; structural only"
+  },
+  {
+    "id": "local/probes/a-heap-alias/a1-same-site",
+    "source": "local/probes/a-heap-alias/a1-same-site.js",
+    "tags": [
+      "taint-probe",
+      "a-heap-alias"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/a-heap-alias/a2-distinct-site",
+    "source": "local/probes/a-heap-alias/a2-distinct-site.js",
+    "tags": [
+      "taint-probe",
+      "a-heap-alias"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/a-heap-alias/a3-mov-alias",
+    "source": "local/probes/a-heap-alias/a3-mov-alias.js",
+    "tags": [
+      "taint-probe",
+      "a-heap-alias"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/a-heap-alias/a4-unknown-base-store",
+    "source": "local/probes/a-heap-alias/a4-unknown-base-store.js",
+    "tags": [
+      "taint-probe",
+      "a-heap-alias"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/a-heap-alias/a5-weak-update-alias",
+    "source": "local/probes/a-heap-alias/a5-weak-update-alias.js",
+    "tags": [
+      "taint-probe",
+      "a-heap-alias"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/a-heap-alias/a6-phi-merge",
+    "source": "local/probes/a-heap-alias/a6-phi-merge.js",
+    "tags": [
+      "taint-probe",
+      "a-heap-alias"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/b-closure-capture/b1-capture-direct",
+    "source": "local/probes/b-closure-capture/b1-capture-direct.js",
+    "tags": [
+      "taint-probe",
+      "b-closure-capture"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/b-closure-capture/b2-lexvar-cross-function",
+    "source": "local/probes/b-closure-capture/b2-lexvar-cross-function.js",
+    "tags": [
+      "taint-probe",
+      "b-closure-capture"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/b-closure-capture/b3-callback-registration",
+    "source": "local/probes/b-closure-capture/b3-callback-registration.js",
+    "tags": [
+      "taint-probe",
+      "b-closure-capture"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/c-dynamic-dispatch/c1-phi-two-closures",
+    "source": "local/probes/c-dynamic-dispatch/c1-phi-two-closures.js",
+    "tags": [
+      "taint-probe",
+      "c-dynamic-dispatch"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/c-dynamic-dispatch/c2-name-shadow",
+    "source": "local/probes/c-dynamic-dispatch/c2-name-shadow.js",
+    "tags": [
+      "taint-probe",
+      "c-dynamic-dispatch"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/c-dynamic-dispatch/c3-unresolved-method",
+    "source": "local/probes/c-dynamic-dispatch/c3-unresolved-method.js",
+    "tags": [
+      "taint-probe",
+      "c-dynamic-dispatch"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/c-dynamic-dispatch/c4-handler-table",
+    "source": "local/probes/c-dynamic-dispatch/c4-handler-table.js",
+    "tags": [
+      "taint-probe",
+      "c-dynamic-dispatch"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/d-exceptional-flow/d1-throw-to-handler",
+    "source": "local/probes/d-exceptional-flow/d1-throw-to-handler.js",
+    "tags": [
+      "taint-probe",
+      "d-exceptional-flow"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/d-exceptional-flow/d2-clean-catch",
+    "source": "local/probes/d-exceptional-flow/d2-clean-catch.js",
+    "tags": [
+      "taint-probe",
+      "d-exceptional-flow"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/d-exceptional-flow/d3-throw-across-call",
+    "source": "local/probes/d-exceptional-flow/d3-throw-across-call.js",
+    "tags": [
+      "taint-probe",
+      "d-exceptional-flow"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/d-exceptional-flow/d4-throw-through-global",
+    "source": "local/probes/d-exceptional-flow/d4-throw-through-global.js",
+    "tags": [
+      "taint-probe",
+      "d-exceptional-flow"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e1-stringify",
+    "source": "local/probes/e-builtin-summary/e1-stringify.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e10-string-repeat-count",
+    "source": "local/probes/e-builtin-summary/e10-string-repeat-count.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e11-array-foreach",
+    "source": "local/probes/e-builtin-summary/e11-array-foreach.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e12-array-map",
+    "source": "local/probes/e-builtin-summary/e12-array-map.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e13-array-map-ignore-param",
+    "source": "local/probes/e-builtin-summary/e13-array-map-ignore-param.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e14-array-filter",
+    "source": "local/probes/e-builtin-summary/e14-array-filter.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e15-array-foreach-unresolved-cb",
+    "source": "local/probes/e-builtin-summary/e15-array-foreach-unresolved-cb.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e16-array-foreach-param-cb",
+    "source": "local/probes/e-builtin-summary/e16-array-foreach-param-cb.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e17-string-replace-str",
+    "source": "local/probes/e-builtin-summary/e17-string-replace-str.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e18-string-replace-func",
+    "source": "local/probes/e-builtin-summary/e18-string-replace-func.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e19-regexp-test",
+    "source": "local/probes/e-builtin-summary/e19-regexp-test.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e2-pure-test",
+    "source": "local/probes/e-builtin-summary/e2-pure-test.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e20-string-split",
+    "source": "local/probes/e-builtin-summary/e20-string-split.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e21-array-join",
+    "source": "local/probes/e-builtin-summary/e21-array-join.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e22-parseint",
+    "source": "local/probes/e-builtin-summary/e22-parseint.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e23-assign-result",
+    "source": "local/probes/e-builtin-summary/e23-assign-result.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e3-body-step",
+    "source": "local/probes/e-builtin-summary/e3-body-step.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e4-native-identity",
+    "source": "local/probes/e-builtin-summary/e4-native-identity.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e5-assign-field",
+    "source": "local/probes/e-builtin-summary/e5-assign-field.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e6-array-pop",
+    "source": "local/probes/e-builtin-summary/e6-array-pop.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e7-own-method-shadow",
+    "source": "local/probes/e-builtin-summary/e7-own-method-shadow.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e8-string-charcodeat-global",
+    "source": "local/probes/e-builtin-summary/e8-string-charcodeat-global.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
+  },
+  {
+    "id": "local/probes/e-builtin-summary/e9-iterator-next",
+    "source": "local/probes/e-builtin-summary/e9-iterator-next.js",
+    "tags": [
+      "taint-probe",
+      "e-builtin-summary"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "versions": [
+      "24.0.0.0"
+    ],
+    "profiles": [
+      "baseline"
+    ],
+    "runtime_reason": "taint-analysis probe; structural only"
   }
 ]

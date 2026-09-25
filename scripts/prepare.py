@@ -10,6 +10,10 @@ import sys
 
 REPO = Path(__file__).resolve().parents[1]
 
+TEST262_COMMIT = "747bed2e8aaafe8fdf2c65e8a10dd7ae64f66c47"
+TEST262_REPO = "https://github.com/tc39/test262.git"
+MANIFEST_TAG_DEFAULT = "OpenHarmony-7.0-Release"
+
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -17,6 +21,188 @@ def sha(path):
 
 def write(path, obj):
     path.write_text(json.dumps(obj, indent=2, sort_keys=True) + "\n")
+
+
+TEST262_TARBALL = "https://codeload.github.com/tc39/test262/tar.gz/" + TEST262_COMMIT
+TEST262_TREE = "108f92392a2eb006170782c598a3336617715b87"  # git tree of TEST262_COMMIT
+
+
+def checkout_test262():
+    """Download and unpack tc39/test262 at the pinned commit (network at
+    prepare time). Uses the codeload tarball: the git protocol to github.com
+    is unreliable from the build host. The extracted tree is verified against
+    the commit's real git tree hash via `git write-tree`."""
+    import tarfile
+    import tempfile
+    import urllib.request
+    checkout = REPO / "test262"
+    marker = checkout / ".test262-commit"
+    if not (marker.exists() and marker.read_text().strip() == TEST262_COMMIT):
+        if checkout.exists():
+            shutil.rmtree(checkout)
+        checkout.mkdir()
+        with tempfile.NamedTemporaryFile(suffix=".tar.gz") as tmp:
+            print("downloading " + TEST262_TARBALL, flush=True)
+            with urllib.request.urlopen(TEST262_TARBALL, timeout=120) as response:
+                shutil.copyfileobj(response, tmp)
+            tmp.flush()
+            with tarfile.open(tmp.name) as tar:
+                roots = {m.name.split("/", 1)[0] for m in tar.getmembers()}
+                if roots != {"test262-" + TEST262_COMMIT}:
+                    raise ValueError("unexpected tarball layout: " + str(roots))
+                tar.extractall(checkout, members=(m for m in tar.getmembers() if m.isfile()))
+        for entry in checkout.iterdir():
+            if entry.name == "test262-" + TEST262_COMMIT:
+                for child in entry.iterdir():
+                    shutil.move(str(child), checkout)
+                entry.rmdir()
+    if not (checkout / ".git").exists():
+        subprocess.check_call(["git", "-C", str(checkout), "init", "-q"])
+        # The completion marker must never enter the hashed tree.
+        (checkout / ".git/info/exclude").write_text("/.test262-commit\n")
+    subprocess.check_call(["git", "-C", str(checkout), "add", "-A"])
+    tree = subprocess.check_output(["git", "-C", str(checkout), "write-tree"], text=True).strip()
+    if tree != TEST262_TREE:
+        raise ValueError("test262 tree hash mismatch: %s != %s" % (tree, TEST262_TREE))
+    marker.write_text(TEST262_COMMIT + "\n")
+    return checkout, tree
+
+
+def parse_frontmatter(text, path):
+    """Parse the simple YAML subset used by test262 /*--- ... ---*/ blocks."""
+    start = text.find("/*---")
+    if start < 0:
+        return {}
+    end = text.find("---*/", start)
+    if end < 0:
+        raise ValueError("unterminated frontmatter: " + path)
+    lines = text[start + 5:end].splitlines()
+    indents = [len(l) - len(l.lstrip()) for l in lines if l.strip()]
+    if indents and min(indents):
+        pad = min(indents)
+        lines = [l[pad:] if l.strip() else l for l in lines]
+    meta = {}
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        i += 1
+        if not line.strip() or line.strip().startswith("#"):
+            continue
+        if line[0] in " \t":
+            raise ValueError("unexpected indentation in frontmatter of %s: %r" % (path, line))
+        key, sep, value = line.strip().partition(":")
+        if not sep:
+            raise ValueError("frontmatter line without key in %s: %r" % (path, line))
+        key = key.strip()
+        value = value.strip()
+        if value.startswith("["):
+            while "]" not in value:
+                if i >= len(lines):
+                    raise ValueError("unterminated inline list in frontmatter of " + path)
+                value += " " + lines[i].strip()
+                i += 1
+            inner = value[1:value.index("]")]
+            meta[key] = [x.strip().strip("'\"") for x in inner.split(",") if x.strip()]
+        elif value in (">", "|", ">-", "|-", ">+", "|+"):
+            folded = []
+            while i < len(lines) and (not lines[i].strip() or lines[i][0] in " \t"):
+                folded.append(lines[i].strip())
+                i += 1
+            meta[key] = " ".join(folded).strip()
+        elif value == "":
+            items, mapping = [], {}
+            while i < len(lines) and lines[i].strip() and lines[i][0] in " \t":
+                sub = lines[i].strip()
+                i += 1
+                if sub.startswith("- "):
+                    items.append(sub[2:].strip().strip("'\""))
+                else:
+                    k2, sep2, v2 = sub.partition(":")
+                    if not sep2:
+                        raise ValueError("bad nested frontmatter in %s: %r" % (path, sub))
+                    mapping[k2.strip()] = v2.strip().strip("'\"")
+            meta[key] = items if items else mapping
+        else:
+            meta[key] = value.strip("'\"")
+    return meta
+
+
+def as_list(value):
+    if value is None:
+        return []
+    return value if isinstance(value, list) else [value]
+
+
+def read_ci_names(ci_list):
+    """CI_tests.txt, order-preserving and deduplicated (the upstream list
+    itself repeats a handful of entries)."""
+    seen, names = set(), []
+    for line in ci_list.read_text().splitlines():
+        name = line.strip()
+        if name and not name.startswith("#") and name not in seen:
+            seen.add(name)
+            names.append(name)
+    return names
+
+
+def stage_test262(checkout, tree, frontend, sources, cases):
+    """Stage the arkcompiler CI_tests.txt subset of test262, preprocessed per
+    INTERPRETING.md: sta.js + assert.js inlined, single strict-mode pass.
+    Tests needing more (extra includes, async, module, raw/noStrict) become
+    counted skip entries, never silent drops."""
+    ci_list = frontend / "test262/CI_tests.txt"
+    if not ci_list.exists():
+        raise ValueError("missing test262 CI list: " + str(ci_list))
+    names = read_ci_names(ci_list)
+    harness = '"use strict";\n' + (checkout / "harness/sta.js").read_text() + "\n" \
+        + (checkout / "harness/assert.js").read_text() + "\n"
+    for name in names:
+        source = checkout / "test" / name
+        cid = "test262/" + (name[:-3] if name.endswith(".js") else name)
+        if not source.is_file():
+            # arkcompiler's CI list tracks its own fork pin; entries absent at
+            # the upstream pin are a counted bucket, never a silent drop.
+            cases.append({"id": cid, "tags": ["test262", name.split("/", 1)[0]],
+                          "origin": {"kind": "test262", "license": "BSD-3-Clause",
+                                     "upstream-commit": TEST262_COMMIT, "path": "test/" + name},
+                          "test262": {"flags": [], "negative": None},
+                          "skip": "missing"})
+            continue
+        text = source.read_text(errors="replace")
+        meta = parse_frontmatter(text, name)
+        flags = as_list(meta.get("flags"))
+        includes = as_list(meta.get("includes"))
+        negative = meta.get("negative") or None
+        if negative is not None and not isinstance(negative, dict):
+            raise ValueError("unexpected negative block in " + name)
+        if "raw" in flags or "noStrict" in flags:
+            skip = "flags"
+        elif "module" in flags:
+            skip = "module"
+        elif "async" in flags:
+            skip = "async"
+        elif includes:
+            skip = "includes"
+        else:
+            skip = None
+        case = {"id": cid, "tags": ["test262", name.split("/", 1)[0]],
+                "origin": {"kind": "test262", "license": "BSD-3-Clause",
+                           "upstream-commit": TEST262_COMMIT, "path": "test/" + name},
+                "test262": {"flags": flags, "negative": negative}}
+        if skip:
+            case["skip"] = skip
+        else:
+            case["source"] = "test262/" + name
+            case["versions"] = ["24.0.0.0"]
+            case["profiles"] = ["baseline"]
+            case["runtime_reason"] = "test262 raw behavior record"
+            dest = sources / "test262" / name
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(harness + text)
+        cases.append(case)
+    return {"commit": TEST262_COMMIT, "tree": tree,
+            "ci_list": "arkcompiler/ets_frontend/test262/CI_tests.txt",
+            "ci_list_sha256": sha(ci_list), "tests": len(names)}
 
 
 def main():
@@ -102,12 +288,22 @@ def main():
             case["expected_stdout"] = expected.read_text()
             case["origin"]["expected_path"] = "es2panda/test/" + entry["expected_file"]
         cases.append(case)
+    checkout, test262_tree = checkout_test262()
+    ci_list = frontend / "test262/CI_tests.txt"
+    if not ci_list.exists():
+        raise ValueError("missing test262 CI list: " + str(ci_list))
+    ci_names = read_ci_names(ci_list)
     ids = [c["id"] for c in cases]
     if len(ids) != len(set(ids)):
         raise ValueError("duplicate case IDs")
-    lock = {"revisions": revisions, "selected_files_sha256": files,
-            "isa_sha256": sha(oh / "arkcompiler/runtime_core/isa/isa.yaml")}
     lock_path = REPO / "upstream.lock.json"
+    previous = json.loads(lock_path.read_text()) if lock_path.exists() else {}
+    lock = {"manifest_tag": previous.get("manifest_tag", MANIFEST_TAG_DEFAULT),
+            "revisions": revisions, "selected_files_sha256": files,
+            "isa_sha256": sha(oh / "arkcompiler/runtime_core/isa/isa.yaml"),
+            "test262": {"commit": TEST262_COMMIT, "tree": test262_tree,
+                        "ci_list": "arkcompiler/ets_frontend/test262/CI_tests.txt",
+                        "ci_list_sha256": sha(ci_list), "tests": len(ci_names)}}
     if args.update_lock:
         write(lock_path, lock)
     elif not lock_path.exists() or json.loads(lock_path.read_text()) != lock:
@@ -137,6 +333,13 @@ def main():
         dst = sources / "upstream" / rel
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, dst)
+    stage_test262(checkout, test262_tree, frontend, sources, cases)
+    # The image is consumed as a non-root user; never propagate host umasks.
+    for path in sorted(sources.rglob("*")):
+        path.chmod(0o755 if path.is_dir() else 0o644)
+    ids = [c["id"] for c in cases]
+    if len(ids) != len(set(ids)):
+        raise ValueError("duplicate case IDs")
     pandasm = stage / "pandasm"
     pandasm.mkdir()
     pandasm_index = []
@@ -156,6 +359,7 @@ def main():
     licenses = stage / "licenses"
     licenses.mkdir()
     shutil.copy2(REPO / "LICENSE", licenses / "arkcompiler-test-LICENSE")
+    shutil.copy2(checkout / "LICENSE", licenses / "test262-LICENSE")
     for component in [oh / "arkcompiler", oh / "third_party"]:
         for f in sorted(component.rglob("*")):
             if f.is_file() and f.name.upper().startswith(("LICENSE", "LICENCE", "NOTICE", "COPYING", "COPYRIGHT")):

@@ -98,6 +98,14 @@ Forty taint-analysis probes (`cases/probes/`, from abcd-rs `probes-taint`) and f
 cases — compile + disassemble only — pinned to `24.0.0.0`/`baseline` to keep the
 corpus volume flat.
 
+Two opcode-coverage fixtures (`cases/private-property-store.js` for
+`stprivateproperty` and `cases/private-property-in.js` for `testin`, previously
+generated consumer-side by abcd-rs's `scripts/gen-opcode-fixtures.py`) are now
+baked into the image as project (Apache-2.0) runtime cases. Since 9.0.0.0's
+es2abc rejects private-field syntax, they build on the other five versions
+across all three profiles (30 fixtures), each verified to print `42` under
+`ark_js_vm`.
+
 `version_control/` source cases are included with their upstream API-specific target
 arguments. This preserves real version gating for API11, API12 beta1, API12 beta3,
 API18, API20 and API24 instead of compiling every feature as API24. Run

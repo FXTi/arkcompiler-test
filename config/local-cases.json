@@ -471,6 +471,50 @@
     ]
   },
   {
+    "id": "local/private-property-store",
+    "source": "local/private-property-store.js",
+    "tags": [
+      "ir",
+      "classes",
+      "private-properties",
+      "opcode-coverage"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "42\n",
+    "versions": [
+      "11.0.2.0",
+      "12.0.2.0",
+      "12.0.6.0",
+      "13.0.1.0",
+      "24.0.0.0"
+    ]
+  },
+  {
+    "id": "local/private-property-in",
+    "source": "local/private-property-in.js",
+    "tags": [
+      "ir",
+      "classes",
+      "private-properties",
+      "opcode-coverage"
+    ],
+    "origin": {
+      "kind": "project",
+      "license": "Apache-2.0"
+    },
+    "expected_stdout": "42\n",
+    "versions": [
+      "11.0.2.0",
+      "12.0.2.0",
+      "12.0.6.0",
+      "13.0.1.0",
+      "24.0.0.0"
+    ]
+  },
+  {
     "id": "local/super-properties",
     "source": "local/super-properties.js",
     "tags": [

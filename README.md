@@ -18,6 +18,7 @@ cd <OpenHarmony-checkout>
 python3 ark.py x64.release es2panda ark_disasm ark_js_vm -j8
 
 cd <arkcompiler-test-checkout>
+git submodule update --init   # on dabai: proxychains4 -q git submodule update --init
 make build
 make test
 ```
@@ -37,8 +38,12 @@ the worker count; the default is all cores) and the resulting corpus is
 byte-identical to a serial run. Compilation or oracle failure fails the build —
 all failures are collected and reported; no failed fixtures are silently skipped.
 Building may need network access for the base image and apt; using the finished
-image does not. `prepare.py` also downloads the pinned test262 tarball (network
-at prepare time only).
+image does not. test262 is a git submodule (`test262/`, pinned at
+`747bed2e8aaafe8fdf2c65e8a10dd7ae64f66c47`; integrity is git object identity
+itself), so prepare needs no network: initialize it once with
+`git submodule update --init` (on dabai, github access goes through the proxy:
+`proxychains4 -q git submodule update --init`). `prepare.py` only verifies the
+pin and a clean worktree, it never downloads.
 
 ## Version contract
 
@@ -69,7 +74,8 @@ corpus, not an assertion of complete ISA coverage.
 
 The corpus also contains a test262 P0 subset: arkcompiler's own curated CI list
 (`arkcompiler/ets_frontend/test262/CI_tests.txt`, 3,968 entries — 3,963 after deduplicating 5 repeats in the list itself) run against
-`tc39/test262` pinned at commit `747bed2e8aaafe8fdf2c65e8a10dd7ae64f66c47`
+`tc39/test262` pinned at commit `747bed2e8aaafe8fdf2c65e8a10dd7ae64f66c47`,
+checked out as the `test262/` git submodule
 (BSD-3-Clause; the license text ships under `licenses/test262-LICENSE`, and the pin
 plus the verified git tree hash live in `upstream.lock.json`). Each test is
 preprocessed per upstream INTERPRETING rules: `harness/sta.js` and
@@ -192,7 +198,9 @@ ref by tip committer date. Drift against `upstream.lock.json`'s `manifest_tag`
 produces ONE standing PR per ref (closing it means wont-port) containing the human
 checklist below; radar infrastructure failures produce ONE standing issue. The
 radar never gates, never builds, never syncs and never auto-merges. The remaining
-CI job (`check.yml`) only compiles the Python and runs the header unit tests.
+CI job (`check.yml`) only compiles the Python and runs the header unit tests;
+such checkouts never run `prepare.py` and can skip initializing the test262
+submodule.
 
 When the radar (or a human) accepts a new manifest ref, the manual flow is:
 

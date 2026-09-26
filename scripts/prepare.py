@@ -23,48 +23,31 @@ def write(path, obj):
     path.write_text(json.dumps(obj, indent=2, sort_keys=True) + "\n")
 
 
-TEST262_TARBALL = "https://codeload.github.com/tc39/test262/tar.gz/" + TEST262_COMMIT
 TEST262_TREE = "108f92392a2eb006170782c598a3336617715b87"  # git tree of TEST262_COMMIT
 
 
-def checkout_test262():
-    """Download and unpack tc39/test262 at the pinned commit (network at
-    prepare time). Uses the codeload tarball: the git protocol to github.com
-    is unreliable from the build host. The extracted tree is verified against
-    the commit's real git tree hash via `git write-tree`."""
-    import tarfile
-    import tempfile
-    import urllib.request
+def verify_test262():
+    """Verify the test262 git submodule is checked out exactly at the pinned
+    commit; performs no download. Integrity is git object identity itself:
+    HEAD must equal TEST262_COMMIT (whose tree is TEST262_TREE) and the
+    worktree must be clean. On dabai, github access goes through the proxy:
+    proxychains4 -q git submodule update --init"""
     checkout = REPO / "test262"
-    marker = checkout / ".test262-commit"
-    if not (marker.exists() and marker.read_text().strip() == TEST262_COMMIT):
-        if checkout.exists():
-            shutil.rmtree(checkout)
-        checkout.mkdir()
-        with tempfile.NamedTemporaryFile(suffix=".tar.gz") as tmp:
-            print("downloading " + TEST262_TARBALL, flush=True)
-            with urllib.request.urlopen(TEST262_TARBALL, timeout=120) as response:
-                shutil.copyfileobj(response, tmp)
-            tmp.flush()
-            with tarfile.open(tmp.name) as tar:
-                roots = {m.name.split("/", 1)[0] for m in tar.getmembers()}
-                if roots != {"test262-" + TEST262_COMMIT}:
-                    raise ValueError("unexpected tarball layout: " + str(roots))
-                tar.extractall(checkout, members=(m for m in tar.getmembers() if m.isfile()))
-        for entry in checkout.iterdir():
-            if entry.name == "test262-" + TEST262_COMMIT:
-                for child in entry.iterdir():
-                    shutil.move(str(child), checkout)
-                entry.rmdir()
+    hint = ("run: git submodule update --init (on dabai, github access goes "
+            "through the proxy: proxychains4 -q git submodule update --init)")
     if not (checkout / ".git").exists():
-        subprocess.check_call(["git", "-C", str(checkout), "init", "-q"])
-        # The completion marker must never enter the hashed tree.
-        (checkout / ".git/info/exclude").write_text("/.test262-commit\n")
-    subprocess.check_call(["git", "-C", str(checkout), "add", "-A"])
-    tree = subprocess.check_output(["git", "-C", str(checkout), "write-tree"], text=True).strip()
+        raise ValueError("test262 submodule is not initialized; " + hint)
+    head = subprocess.check_output(
+        ["git", "-C", str(checkout), "rev-parse", "HEAD"], text=True).strip()
+    if head != TEST262_COMMIT:
+        raise ValueError(
+            "test262 submodule is at %s, expected %s; " % (head, TEST262_COMMIT) + hint)
+    tree = subprocess.check_output(
+        ["git", "-C", str(checkout), "rev-parse", "HEAD^{tree}"], text=True).strip()
     if tree != TEST262_TREE:
         raise ValueError("test262 tree hash mismatch: %s != %s" % (tree, TEST262_TREE))
-    marker.write_text(TEST262_COMMIT + "\n")
+    if subprocess.call(["git", "-C", str(checkout), "diff", "--quiet", "HEAD", "--"]):
+        raise ValueError("test262 submodule worktree is dirty; do not edit submodule contents")
     return checkout, tree
 
 
@@ -288,7 +271,7 @@ def main():
             case["expected_stdout"] = expected.read_text()
             case["origin"]["expected_path"] = "es2panda/test/" + entry["expected_file"]
         cases.append(case)
-    checkout, test262_tree = checkout_test262()
+    checkout, test262_tree = verify_test262()
     ci_list = frontend / "test262/CI_tests.txt"
     if not ci_list.exists():
         raise ValueError("missing test262 CI list: " + str(ci_list))

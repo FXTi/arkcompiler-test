@@ -1,0 +1,1253 @@
+{
+  "_comment": "Wild OHOS system-image haps from hap_collect (rk3568 official builds). expectation: decode-ok = abcd_file::decode must succeed; negative-invalid-opcode = must fail with invalid opcode (3.2/4.0-era opcodes absent from the pinned ISA).",
+  "packages": [
+    {
+      "path": "OpenHarmony-3.2-Release/Calc_Demo.hap",
+      "sha256": "a0203769cd468973f1e4a7a3dcba8945c4a877865be6ef69a86460325604a795",
+      "size": 117517,
+      "abc_layout": "fa-assets",
+      "module_name": ".entry",
+      "expectation": "negative-invalid-opcode"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/CallUI.hap",
+      "sha256": "3fd036185885497698f9581dd4d30f079da25640e4dcb0ea06dc6108fd5c18cd",
+      "size": 491007,
+      "abc_layout": "merged",
+      "module_name": "callui",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/Clock_Demo.hap",
+      "sha256": "170a5e4f6521500cef216de9b45eacfc22af955a7732c16eff6a44c9c7fda908",
+      "size": 159949,
+      "abc_layout": "fa-assets",
+      "module_name": ".MyApplication",
+      "expectation": "negative-invalid-opcode"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/Launcher.hap",
+      "sha256": "7ac3b6702956395103a2abfe8616d2dc7f3076d42885b0ef49cfc55717f5d9da",
+      "size": 4134751,
+      "abc_layout": "per-ability",
+      "module_name": "phone-launcher",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/Launcher_Settings.hap",
+      "sha256": "6dd274bb4fc3b281371bb11c453ebea6855273fe0896b991293dc3a2204fccad",
+      "size": 1377153,
+      "abc_layout": "per-ability",
+      "module_name": "launcher_settings",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/MobileDataSettings.hap",
+      "sha256": "29f5456dff5a0b3dc81743db9955e1d4919d784f85c899c75878a51497ec5037",
+      "size": 138558,
+      "abc_layout": "merged",
+      "module_name": "mobiledatasettings",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/Music_Demo.hap",
+      "sha256": "032f04bdbe9fc861d906aae96a8d668ce62974fecf8a7a7ce6e02810bcd9e1f9",
+      "size": 1696083,
+      "abc_layout": "fa-assets",
+      "module_name": ".entry",
+      "expectation": "negative-invalid-opcode"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/ScreenShot.hap",
+      "sha256": "0d27e2fc8b1a53c7bad7ae04fb6c86041a5023eb23cc6994dc3a2ef3bba857a0",
+      "size": 55026,
+      "abc_layout": "per-ability",
+      "module_name": "phone",
+      "expectation": "negative-invalid-opcode"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/Settings_FaceAuth.hap",
+      "sha256": "bbedf72a5881d078e9a7f4ac8b1c9cde5d5cfdf2a0fce0281fd5041a597a3380",
+      "size": 299293,
+      "abc_layout": "per-ability",
+      "module_name": "entry",
+      "expectation": "negative-invalid-opcode"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/SystemUI-DropdownPanel.hap",
+      "sha256": "0923aa92263ef84ee093c92c9230ebb08e590010794600584b29fb407fd4f7b0",
+      "size": 1629839,
+      "abc_layout": "per-ability",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/SystemUI-NavigationBar.hap",
+      "sha256": "1a64fef26bf0e2b63b83d2aa360ee0b78932f8adaf54e718d0deda6d7f20d503",
+      "size": 179893,
+      "abc_layout": "per-ability",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/SystemUI-ScreenLock.hap",
+      "sha256": "9eee7cfa2357a9863559749670bb816c7c372da0d58715c9980a0f5417f7347b",
+      "size": 1195249,
+      "abc_layout": "per-ability",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/SystemUI-StatusBar.hap",
+      "sha256": "3e676f58f4d48b52fbce41d273d1421bf11a64c41c4c413f1334023da14faa11",
+      "size": 519823,
+      "abc_layout": "per-ability",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/SystemUI-VolumePanel.hap",
+      "sha256": "6b8f25006fceb9ee6d10e8e4412960328ee9766ef1c004f1ebaa9dbed1856ef2",
+      "size": 176831,
+      "abc_layout": "per-ability",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/adminprovisioning.hap",
+      "sha256": "91a009aca117643ed4f9f6957ee70d68f26202edbc855c5d1505381e697a20ec",
+      "size": 268137,
+      "abc_layout": "per-ability",
+      "module_name": "adminprovisioning",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-3.2-Release/input_method_choose_dialog.hap",
+      "sha256": "039b8ecf41a9234abfb2c863fadc3da1abb09790f5fb0caf8c2d426db830c001",
+      "size": 38438,
+      "abc_layout": "per-ability",
+      "module_name": "entry",
+      "expectation": "negative-invalid-opcode"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta1/Clock_Demo.hap",
+      "sha256": "d344580f669b46ce482883b4483b0e7a1edc6fb2a1fe3bc9ccffd86ab204ff7b",
+      "size": 159908,
+      "abc_layout": "fa-assets",
+      "module_name": ".MyApplication",
+      "expectation": "negative-invalid-opcode"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta1/ScreenShot.hap",
+      "sha256": "a5b344dda52a15db6f4683c0099fcaf89ca5fbd4774a74bfd546ec3eec8fe820",
+      "size": 55048,
+      "abc_layout": "per-ability",
+      "module_name": "phone",
+      "expectation": "negative-invalid-opcode"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta1/SystemUI-DropdownPanel.hap",
+      "sha256": "c294a2bb73bfa4b63595e2ad68bb380510fcd0964361ac8389397c11de97381d",
+      "size": 1623672,
+      "abc_layout": "per-ability",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta1/SystemUI-NavigationBar.hap",
+      "sha256": "c22bd80ba86ef2f158e8e3be3399185fc140455b218d5573f28bc904eb11a155",
+      "size": 179071,
+      "abc_layout": "per-ability",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta1/SystemUI-ScreenLock.hap",
+      "sha256": "11da5d7dc4ba9667826215eddde02c2526378d4ea848cae2a8ceaff3efe69e9b",
+      "size": 1190946,
+      "abc_layout": "per-ability",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta1/SystemUI-StatusBar.hap",
+      "sha256": "3343c5eea326de72feefa8e79afccd7ce166577414eb9607f095a8f53bd4aff1",
+      "size": 516321,
+      "abc_layout": "per-ability",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta1/SystemUI-VolumePanel.hap",
+      "sha256": "ab53c40b4c9596bf7e7af2ae0b77e757122e618efe46e29770b40fc33ae2b49e",
+      "size": 176021,
+      "abc_layout": "per-ability",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta2/Calc_Demo.hap",
+      "sha256": "454a58faca1e9c2adb6f89dd04445ac767b204dc973a0b5decdeeb8e23640d90",
+      "size": 117495,
+      "abc_layout": "fa-assets",
+      "module_name": ".entry",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta2/Clock_Demo.hap",
+      "sha256": "d344580f669b46ce482883b4483b0e7a1edc6fb2a1fe3bc9ccffd86ab204ff7b",
+      "size": 159908,
+      "abc_layout": "fa-assets",
+      "module_name": ".MyApplication",
+      "expectation": "negative-invalid-opcode"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta2/SystemUI-DropdownPanel.hap",
+      "sha256": "71fca8fe4bedfc2b69b1ef54903e3ba637510649c2d2676ec695de44511cf8a4",
+      "size": 1711070,
+      "abc_layout": "per-ability",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta2/SystemUI-NavigationBar.hap",
+      "sha256": "2086a90334125f10e29e1f16cf250a91d5eafe8668b7a6d7ff2ef1d40aa28241",
+      "size": 189254,
+      "abc_layout": "per-ability",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta2/SystemUI-ScreenLock.hap",
+      "sha256": "dff6d73ed47a5944956ea6ea3ff3ce8e2b9471f4ba0188e9259b27b93e1fbc56",
+      "size": 1325051,
+      "abc_layout": "per-ability",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta2/SystemUI-StatusBar.hap",
+      "sha256": "04048e51f95e038f55f83e212b39ffcbe9ce99d5ba3dbfd4607d3f803e5631be",
+      "size": 551794,
+      "abc_layout": "per-ability",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta2/SystemUI-SystemDialog.hap",
+      "sha256": "1199e687086c9d620c7da6b91713ee018740940cd14127334eeb22f0495a6cdd",
+      "size": 50223,
+      "abc_layout": "per-ability",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Beta2/SystemUI-VolumePanel.hap",
+      "sha256": "fd8e1dc263ce82eeffc55cc8ba46290ec18fedca623122843f31c191e9b5bd46",
+      "size": 185237,
+      "abc_layout": "per-ability",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Release/Clock_Demo.hap",
+      "sha256": "859a2bd75f865d4c2a19c7531711f2ae71dd860b1489e40f8a9115e847716bbc",
+      "size": 206103,
+      "abc_layout": "fa-assets",
+      "module_name": ".MyApplication",
+      "expectation": "negative-invalid-opcode"
+    },
+    {
+      "path": "OpenHarmony-4.0-Release/Launcher.hap",
+      "sha256": "d901db2bfb3404412e15748214b4ecc1867492ea9010828f6ddbc0e81e9418e1",
+      "size": 2604963,
+      "abc_layout": "merged",
+      "module_name": "phone_launcher",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Release/Music_Demo.hap",
+      "sha256": "032f04bdbe9fc861d906aae96a8d668ce62974fecf8a7a7ce6e02810bcd9e1f9",
+      "size": 1696083,
+      "abc_layout": "fa-assets",
+      "module_name": ".entry",
+      "expectation": "negative-invalid-opcode"
+    },
+    {
+      "path": "OpenHarmony-4.0-Release/Photos.hap",
+      "sha256": "9460a61b2d92bc28ed7007b4325fe8ec921f6f2287ecf012de0927ff49d6ba3e",
+      "size": 12104417,
+      "abc_layout": "merged",
+      "module_name": "phone_photos",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Release/Settings.hap",
+      "sha256": "4667a7db7e2cc5634966dc4d5e7a502571dd6811f5501849710eeef07f31b7c6",
+      "size": 5113520,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Release/SystemUI-DropdownPanel.hap",
+      "sha256": "d71ca904bf19c329a8d22d8b83fde3f7ff1b8ae96ad9ef922a9ccf2e8d4b7309",
+      "size": 2018662,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Release/SystemUI-NavigationBar.hap",
+      "sha256": "6bbfb8a1cb51e81335751242f5394f6ddad7d8305914274797e714fa69fa607a",
+      "size": 202945,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Release/SystemUI-ScreenLock.hap",
+      "sha256": "1885de4874f2cbca01a9ad169ebc2a25e7fa51b5b00e1636b86132927942e151",
+      "size": 994715,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Release/SystemUI-StatusBar.hap",
+      "sha256": "126b4f417d962ed9e5a0a21d841b872423c57b8bc2fc100cf1070acb2bb12237",
+      "size": 739135,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Release/SystemUI-SystemDialog.hap",
+      "sha256": "5a7b5c345a802b017df1483c6e9b462f889625b978c46bc3f82730fd66bfa023",
+      "size": 67746,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Release/SystemUI-VolumePanel.hap",
+      "sha256": "e7d17036dd1a1dbf37f0cef957fa8a53a5da3aa550712f9df1464b8c1492e5b6",
+      "size": 189692,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.0-Release/dlp_manager.hap",
+      "sha256": "aab716a19756126f03130526019b29a42051cdfe3cf798ca42acc71f2f4265ac",
+      "size": 2709572,
+      "abc_layout": "per-ability",
+      "module_name": "entry",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Beta1/SystemUI-DropdownPanel.hap",
+      "sha256": "0e3210b096b160ca03e98db08e9d24b04ac0b48858292963a788816425d6390b",
+      "size": 2018838,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Beta1/SystemUI-NavigationBar.hap",
+      "sha256": "6934b721b42e2643ad2d2baa852a4c9c876a786955edbc012c53102d9bca0c5b",
+      "size": 202979,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Beta1/SystemUI-ScreenLock.hap",
+      "sha256": "a027a86df8fb3414f50175abaea3d4438646915b222271f2e18fafaca91d8a7a",
+      "size": 989404,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Beta1/SystemUI-StatusBar.hap",
+      "sha256": "9803a26bbe38ce5ae577ab19a78c8299340da049759375ee5dcaf4eea8aa46ae",
+      "size": 739152,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Beta1/SystemUI-SystemDialog.hap",
+      "sha256": "fb60075f9a859e7683ff8e7e5b636bfd1adb19d583e158f13a22a920d512c7f2",
+      "size": 67870,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Beta1/SystemUI-VolumePanel.hap",
+      "sha256": "4fae32a0f63e75ad949c14447b8336f5d6611498f4de11641834f9197c83928b",
+      "size": 181611,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Release/Contacts_DataAbility.hap",
+      "sha256": "021f6eda174dadcc360c72ec14d29629b7169fe4d2457d5dc63232f7bf41e30b",
+      "size": 675934,
+      "abc_layout": "per-ability",
+      "module_name": "contactsdata",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Release/Launcher.hap",
+      "sha256": "2cf65d33c2686c28bc285f718841572f818da7854f0d301d4a8798ef9f438caa",
+      "size": 2616714,
+      "abc_layout": "merged",
+      "module_name": "phone_launcher",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Release/Photos.hap",
+      "sha256": "ddae921c7a2f7a655c1cb035190cefc810db3fc48288b578a9db68740b80685a",
+      "size": 12469189,
+      "abc_layout": "merged",
+      "module_name": "phone_photos",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Release/Settings.hap",
+      "sha256": "b2ea5834acf5fbacb89cfdb126fd39cebe22e85adddd1076fa8a8e6d1dc8e969",
+      "size": 2739274,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Release/SystemUI-DropdownPanel.hap",
+      "sha256": "0b03c440a9e191768eec5fd2dd8387f96ce148269e6b7dddd3a86ac07037c804",
+      "size": 2018483,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Release/SystemUI-NavigationBar.hap",
+      "sha256": "639b1a04a34ecc77db1a411d9494eaae799f4eb09adfeac750b54de934d4fdfb",
+      "size": 201988,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Release/SystemUI-ScreenLock.hap",
+      "sha256": "a6285cb9653b5a6ac10af37f44244eb86d17e33b040efc6d8dc8c7f1767396da",
+      "size": 1014236,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Release/SystemUI-StatusBar.hap",
+      "sha256": "e9b39ec649ca1099d5158ec63dc70ab594740099db0877055649b9641cc550b1",
+      "size": 738961,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Release/SystemUI-SystemDialog.hap",
+      "sha256": "cb31555484f4c8e972ba2041248092ae42fbbe7ca3f0fd021a961a9e7d920548",
+      "size": 71536,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Release/SystemUI-VolumePanel.hap",
+      "sha256": "e3173746eea88dc82d6817d744d30ea100b86a045f67fb5827f3ffb5c75f4f18",
+      "size": 189694,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-4.1-Release/SystemUI.hap",
+      "sha256": "3bb8778edd221b27a6969b98ebb1a5a3d54df33503fa45a4ed6030fbabca4201",
+      "size": 108175,
+      "abc_layout": "merged",
+      "module_name": "phone_entry",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0-Beta1/SystemUI-DropdownPanel.hap",
+      "sha256": "a47ce7ef0350da77020a9ced79f990169abafa5fc47469785edfbf47cc4d6eac",
+      "size": 2018358,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0-Beta1/SystemUI-NavigationBar.hap",
+      "sha256": "a61bf158f21e0b60851cc6170312ed30caf77a62ec2aa5754d69ee5c27e9d869",
+      "size": 201987,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0-Beta1/SystemUI-ScreenLock.hap",
+      "sha256": "1885de4874f2cbca01a9ad169ebc2a25e7fa51b5b00e1636b86132927942e151",
+      "size": 994715,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0-Beta1/SystemUI-StatusBar.hap",
+      "sha256": "f4a883802674caaf8c98dd61a5c6d4731acd1869088944e3395b1c3be9311dce",
+      "size": 738823,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0-Beta1/SystemUI-SystemDialog.hap",
+      "sha256": "af5de8db679b80cfe15bfb05d12a16d830386858126643be44bbc4258a3784b0",
+      "size": 67746,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0-Beta1/SystemUI-VolumePanel.hap",
+      "sha256": "8a6be2d4e51b2512ed57f547063448b8d405988f38f8d261aee1119013587a09",
+      "size": 189694,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0-Release/SystemUI-DropdownPanel.hap",
+      "sha256": "9bab39bff3c34b46280bf7123e54bfddc426cec7da02f0e760f566bdeee3ffc5",
+      "size": 2017404,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0-Release/SystemUI-NavigationBar.hap",
+      "sha256": "61eb59765b28d9caba39b40893b0d509459760726f5f9e0d6ce2243834b048b0",
+      "size": 201987,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0-Release/SystemUI-ScreenLock.hap",
+      "sha256": "249c37ee299e7aa6f8329c54ac38cd28aacfc17c7c2dd4e7ff9905ce0d6fa9a2",
+      "size": 1022848,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0-Release/SystemUI-StatusBar.hap",
+      "sha256": "b52f102e1b43f64dea5e2e24e35a47cbfe76c255ad2294bbf6b48cc380a05783",
+      "size": 738787,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0-Release/SystemUI-SystemDialog.hap",
+      "sha256": "39feb7f536b6ac76aa0d9dbec7ef166bf75fa7cf20f4bf0c73d95f6311623ecd",
+      "size": 67336,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0-Release/SystemUI-VolumePanel.hap",
+      "sha256": "6d8126e19f0694a7f226ab2bdc45d204f271cc2b83c5e348707fe850bc7c4f50",
+      "size": 189693,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.0-Release/SystemUI-DropdownPanel.hap",
+      "sha256": "9bab39bff3c34b46280bf7123e54bfddc426cec7da02f0e760f566bdeee3ffc5",
+      "size": 2017404,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.0-Release/SystemUI-NavigationBar.hap",
+      "sha256": "61eb59765b28d9caba39b40893b0d509459760726f5f9e0d6ce2243834b048b0",
+      "size": 201987,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.0-Release/SystemUI-ScreenLock.hap",
+      "sha256": "249c37ee299e7aa6f8329c54ac38cd28aacfc17c7c2dd4e7ff9905ce0d6fa9a2",
+      "size": 1022848,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.0-Release/SystemUI-StatusBar.hap",
+      "sha256": "b52f102e1b43f64dea5e2e24e35a47cbfe76c255ad2294bbf6b48cc380a05783",
+      "size": 738787,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.0-Release/SystemUI-SystemDialog.hap",
+      "sha256": "39feb7f536b6ac76aa0d9dbec7ef166bf75fa7cf20f4bf0c73d95f6311623ecd",
+      "size": 67336,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.0-Release/SystemUI-VolumePanel.hap",
+      "sha256": "6d8126e19f0694a7f226ab2bdc45d204f271cc2b83c5e348707fe850bc7c4f50",
+      "size": 189693,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.1-Release/SystemUI-DropdownPanel.hap",
+      "sha256": "9bab39bff3c34b46280bf7123e54bfddc426cec7da02f0e760f566bdeee3ffc5",
+      "size": 2017404,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.1-Release/SystemUI-NavigationBar.hap",
+      "sha256": "61eb59765b28d9caba39b40893b0d509459760726f5f9e0d6ce2243834b048b0",
+      "size": 201987,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.1-Release/SystemUI-ScreenLock.hap",
+      "sha256": "249c37ee299e7aa6f8329c54ac38cd28aacfc17c7c2dd4e7ff9905ce0d6fa9a2",
+      "size": 1022848,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.1-Release/SystemUI-StatusBar.hap",
+      "sha256": "b52f102e1b43f64dea5e2e24e35a47cbfe76c255ad2294bbf6b48cc380a05783",
+      "size": 738787,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.1-Release/SystemUI-SystemDialog.hap",
+      "sha256": "39feb7f536b6ac76aa0d9dbec7ef166bf75fa7cf20f4bf0c73d95f6311623ecd",
+      "size": 67336,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.1-Release/SystemUI-VolumePanel.hap",
+      "sha256": "6d8126e19f0694a7f226ab2bdc45d204f271cc2b83c5e348707fe850bc7c4f50",
+      "size": 189693,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.2-Release/SystemUI-DropdownPanel.hap",
+      "sha256": "9bab39bff3c34b46280bf7123e54bfddc426cec7da02f0e760f566bdeee3ffc5",
+      "size": 2017404,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.2-Release/SystemUI-NavigationBar.hap",
+      "sha256": "61eb59765b28d9caba39b40893b0d509459760726f5f9e0d6ce2243834b048b0",
+      "size": 201987,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.2-Release/SystemUI-ScreenLock.hap",
+      "sha256": "249c37ee299e7aa6f8329c54ac38cd28aacfc17c7c2dd4e7ff9905ce0d6fa9a2",
+      "size": 1022848,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.2-Release/SystemUI-StatusBar.hap",
+      "sha256": "b52f102e1b43f64dea5e2e24e35a47cbfe76c255ad2294bbf6b48cc380a05783",
+      "size": 738787,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.2-Release/SystemUI-SystemDialog.hap",
+      "sha256": "39feb7f536b6ac76aa0d9dbec7ef166bf75fa7cf20f4bf0c73d95f6311623ecd",
+      "size": 67336,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.2-Release/SystemUI-VolumePanel.hap",
+      "sha256": "6d8126e19f0694a7f226ab2bdc45d204f271cc2b83c5e348707fe850bc7c4f50",
+      "size": 189693,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.3-Release/Launcher.hap",
+      "sha256": "cfb65ebe96cbae5bbab67439263a2c32672d6eb48009c25b78c899b69a0348c9",
+      "size": 2554773,
+      "abc_layout": "merged",
+      "module_name": "phone_launcher",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.3-Release/Photos.hap",
+      "sha256": "0dd2fe05a91fd7e6b0bd5c48ee4978bc6ee8f3122294f8265c0aedcefe26f5fc",
+      "size": 11533958,
+      "abc_layout": "merged",
+      "module_name": "phone_photos",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.3-Release/Settings.hap",
+      "sha256": "0b0f008c49220c79dea0594db7cf56aecf3844db382f049bf446b32edf224cf8",
+      "size": 4046535,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.3-Release/SystemUI-DropdownPanel.hap",
+      "sha256": "9bab39bff3c34b46280bf7123e54bfddc426cec7da02f0e760f566bdeee3ffc5",
+      "size": 2017404,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.3-Release/SystemUI-NavigationBar.hap",
+      "sha256": "61eb59765b28d9caba39b40893b0d509459760726f5f9e0d6ce2243834b048b0",
+      "size": 201987,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.3-Release/SystemUI-ScreenLock.hap",
+      "sha256": "249c37ee299e7aa6f8329c54ac38cd28aacfc17c7c2dd4e7ff9905ce0d6fa9a2",
+      "size": 1022848,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.3-Release/SystemUI-StatusBar.hap",
+      "sha256": "b52f102e1b43f64dea5e2e24e35a47cbfe76c255ad2294bbf6b48cc380a05783",
+      "size": 738787,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.3-Release/SystemUI-SystemDialog.hap",
+      "sha256": "39feb7f536b6ac76aa0d9dbec7ef166bf75fa7cf20f4bf0c73d95f6311623ecd",
+      "size": 67336,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.3-Release/SystemUI-VolumePanel.hap",
+      "sha256": "6d8126e19f0694a7f226ab2bdc45d204f271cc2b83c5e348707fe850bc7c4f50",
+      "size": 189693,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.3-Release/SystemUI.hap",
+      "sha256": "ed5230317a8b8843e1f33df11c4c6b2b417e55f5ac989ec7701d8d931c4814a4",
+      "size": 108199,
+      "abc_layout": "merged",
+      "module_name": "phone_entry",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.0.3-Release/power_dialog.hap",
+      "sha256": "41af499b7eafbdcb9bdf1aab4b252e3ede8643eaf512750d0a27b6b181ab9ee4",
+      "size": 210124,
+      "abc_layout": "per-ability",
+      "module_name": "entry",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.1.0-Release/AuthWidget.hap",
+      "sha256": "5138aef285d07a01518ccb7cb0c20c175fd524b8a30c8f512a46d3b4ab7e15a2",
+      "size": 548646,
+      "abc_layout": "per-ability",
+      "module_name": "entry",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.1.0-Release/Calc_Demo.hap",
+      "sha256": "da1e6c9fc6870de1952c4e67bef1d762aedd233c0d9a72216c5a8e136eb60882",
+      "size": 295672,
+      "abc_layout": "merged",
+      "module_name": "entry",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.1.0-Release/Launcher.hap",
+      "sha256": "c2eea2cf1218f82658ddb7b0b3e0176f4d4b41ba2a3e1c9f4439e1a5f5f06724",
+      "size": 2551468,
+      "abc_layout": "merged",
+      "module_name": "phone_launcher",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.1.0-Release/Photos.hap",
+      "sha256": "0dd2fe05a91fd7e6b0bd5c48ee4978bc6ee8f3122294f8265c0aedcefe26f5fc",
+      "size": 11533958,
+      "abc_layout": "merged",
+      "module_name": "phone_photos",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.1.0-Release/Settings.hap",
+      "sha256": "18213e15cb31366b1e61397bd0f1b6cee1d4c0e3f20f80ee9927a0dabdcc23aa",
+      "size": 2589313,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.1.0-Release/SystemUI-DropdownPanel.hap",
+      "sha256": "f395cef4d805a8b2063e3576eaae408ddeadb58717dfebbe259fa3200fd042a5",
+      "size": 1706949,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.1.0-Release/SystemUI-NavigationBar.hap",
+      "sha256": "7a8bdf2689f492d71cdc9fd57b9b39f34c40fde7af9f770e6207e6b88e64697e",
+      "size": 177790,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.1.0-Release/SystemUI-ScreenLock.hap",
+      "sha256": "89bb6c0c77f12de0e61f710c1e6883c4bc3d427f8bc3b86d75e49439c037a721",
+      "size": 832471,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.1.0-Release/SystemUI-StatusBar.hap",
+      "sha256": "f350b6b34c83447c31106a108322a08bca76567fb2e2966f56e502b7bea588b5",
+      "size": 591093,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.1.0-Release/SystemUI-SystemDialog.hap",
+      "sha256": "becd419695de7b4be07ee8e287d73c663b6b53cd7bc2d9e7f3732b112c585b3d",
+      "size": 73467,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-5.1.0-Release/SystemUI-VolumePanel.hap",
+      "sha256": "f9b528e2fb24e59e3b06230772e2deea5bc2dad9f42bc07337009ffdc1213839",
+      "size": 160189,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Beta1/SystemUI-DropdownPanel.hap",
+      "sha256": "f42368fc47a20a49193484b233c1255ba6b7fa504222ccfbf2a969dc32e3eb7d",
+      "size": 2027622,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Beta1/SystemUI-NavigationBar.hap",
+      "sha256": "a9d9141105af941c046ecc0b7b11f5d738eda0ef3da14be105e0fc7c08b480c6",
+      "size": 212351,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Beta1/SystemUI-ScreenLock.hap",
+      "sha256": "89bb6c0c77f12de0e61f710c1e6883c4bc3d427f8bc3b86d75e49439c037a721",
+      "size": 832471,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Beta1/SystemUI-StatusBar.hap",
+      "sha256": "338f1fb97cde4e4c3e55b5a0dd4ef2c81a41379220aa1792e27b3bdf06fe1aa7",
+      "size": 749096,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Beta1/SystemUI-SystemDialog.hap",
+      "sha256": "029adf3d3e517442b5adeb6c2c88764ce6665bf7b30f436a96fd50cd2accdff4",
+      "size": 81914,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Beta1/SystemUI-VolumePanel.hap",
+      "sha256": "b1c0b8501ec17a21602cc88ec3a5d8445f51f53e37476501c886c5292bc12ea9",
+      "size": 208258,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Release/AuthWidget.hap",
+      "sha256": "1fd4c01285f604ddd36cb402510fd3768f8f7c2749a165089c96f12212799b4e",
+      "size": 575257,
+      "abc_layout": "per-ability",
+      "module_name": "entry",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Release/Contacts.hap",
+      "sha256": "e6d09973893621bf230acf9123f8c1c291e53ded6d71518b1ded179681227fcc",
+      "size": 2135904,
+      "abc_layout": "merged",
+      "module_name": "entry",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Release/MobileDataSettings.hap",
+      "sha256": "29f5456dff5a0b3dc81743db9955e1d4919d784f85c899c75878a51497ec5037",
+      "size": 138558,
+      "abc_layout": "merged",
+      "module_name": "mobiledatasettings",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Release/Photos.hap",
+      "sha256": "45dbc284d83f262c10b56359ac567204694518a0ac7011c5aa72f349c0c5fb6a",
+      "size": 11573163,
+      "abc_layout": "merged",
+      "module_name": "phone_photos",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Release/Settings.hap",
+      "sha256": "253a0b9d5dfe8aa629743754b7cab1a123659f5a510f6680a80d64b250de78b5",
+      "size": 2622812,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Release/SystemUI-DropdownPanel.hap",
+      "sha256": "8ecc3c01d843564a77dc6f57e44e30fc54cc3495007aa603b52a9530f4d63de8",
+      "size": 1706041,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Release/SystemUI-NavigationBar.hap",
+      "sha256": "a9d9141105af941c046ecc0b7b11f5d738eda0ef3da14be105e0fc7c08b480c6",
+      "size": 212351,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Release/SystemUI-ScreenLock.hap",
+      "sha256": "89bb6c0c77f12de0e61f710c1e6883c4bc3d427f8bc3b86d75e49439c037a721",
+      "size": 832471,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Release/SystemUI-StatusBar.hap",
+      "sha256": "338f1fb97cde4e4c3e55b5a0dd4ef2c81a41379220aa1792e27b3bdf06fe1aa7",
+      "size": 749096,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Release/SystemUI-SystemDialog.hap",
+      "sha256": "029adf3d3e517442b5adeb6c2c88764ce6665bf7b30f436a96fd50cd2accdff4",
+      "size": 81914,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.0-Release/SystemUI-VolumePanel.hap",
+      "sha256": "b1c0b8501ec17a21602cc88ec3a5d8445f51f53e37476501c886c5292bc12ea9",
+      "size": 208258,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-LTS/Contacts.hap",
+      "sha256": "7c8f0d948aaf963f9986e036693a30afab1403507bb39958e348c1811d644ba8",
+      "size": 3264824,
+      "abc_layout": "merged",
+      "module_name": "entry",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-LTS/Launcher.hap",
+      "sha256": "c2eea2cf1218f82658ddb7b0b3e0176f4d4b41ba2a3e1c9f4439e1a5f5f06724",
+      "size": 2551468,
+      "abc_layout": "merged",
+      "module_name": "phone_launcher",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-LTS/Photos.hap",
+      "sha256": "0a9a17d8f4f60f34b38dadead210ce4e8b7984340dad633828a6e9b451863a99",
+      "size": 11574984,
+      "abc_layout": "merged",
+      "module_name": "phone_photos",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-LTS/Settings.hap",
+      "sha256": "030833b6cf9c1706f427c5ae8cb97269cfbad349ce4e401b1ba1425b1dc8dbb1",
+      "size": 2572965,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-LTS/SystemUI-DropdownPanel.hap",
+      "sha256": "1fe571f3f75799eb7a34524b36e0979996075d1a1f9717cacc828204b15873c5",
+      "size": 1705989,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-LTS/SystemUI-NavigationBar.hap",
+      "sha256": "fde14026c94eb272cc64500accc0d63e0f809058061a945044508ee982ac9f2a",
+      "size": 177791,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-LTS/SystemUI-ScreenLock.hap",
+      "sha256": "7e6d99cf44f67a421e20ef2d7a86084d52b45dc1fc4c0ea0902dd4ede47c2cc9",
+      "size": 851864,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-LTS/SystemUI-StatusBar.hap",
+      "sha256": "138005efea895acde60c34788f9d2c2428997066bc6ee1ee368c9a0bdbd7f26d",
+      "size": 590189,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-LTS/SystemUI-SystemDialog.hap",
+      "sha256": "4797d18d57f7234f7e80b9b694691dc3c799b7b633c2214ac28c06da2ad08d0b",
+      "size": 73645,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-LTS/SystemUI-VolumePanel.hap",
+      "sha256": "8e2d3e6f467df88621b5b631041a60f8636ad68762c6bc8f7bf36cd3ad9be089",
+      "size": 160188,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-Release/SystemUI-DropdownPanel.hap",
+      "sha256": "1fe571f3f75799eb7a34524b36e0979996075d1a1f9717cacc828204b15873c5",
+      "size": 1705989,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-Release/SystemUI-NavigationBar.hap",
+      "sha256": "fde14026c94eb272cc64500accc0d63e0f809058061a945044508ee982ac9f2a",
+      "size": 177791,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-Release/SystemUI-ScreenLock.hap",
+      "sha256": "7e6d99cf44f67a421e20ef2d7a86084d52b45dc1fc4c0ea0902dd4ede47c2cc9",
+      "size": 851864,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-Release/SystemUI-StatusBar.hap",
+      "sha256": "138005efea895acde60c34788f9d2c2428997066bc6ee1ee368c9a0bdbd7f26d",
+      "size": 590189,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-Release/SystemUI-SystemDialog.hap",
+      "sha256": "4797d18d57f7234f7e80b9b694691dc3c799b7b633c2214ac28c06da2ad08d0b",
+      "size": 73645,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-6.1-Release/SystemUI-VolumePanel.hap",
+      "sha256": "8e2d3e6f467df88621b5b631041a60f8636ad68762c6bc8f7bf36cd3ad9be089",
+      "size": 160188,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-7.0-Beta1/Contacts.hap",
+      "sha256": "e6d09973893621bf230acf9123f8c1c291e53ded6d71518b1ded179681227fcc",
+      "size": 2135904,
+      "abc_layout": "merged",
+      "module_name": "entry",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-7.0-Beta1/Launcher.hap",
+      "sha256": "c2eea2cf1218f82658ddb7b0b3e0176f4d4b41ba2a3e1c9f4439e1a5f5f06724",
+      "size": 2551468,
+      "abc_layout": "merged",
+      "module_name": "phone_launcher",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-7.0-Beta1/Music_Demo.hap",
+      "sha256": "90221513a5044340f3620544b65eff2994922c652ff2831baabb0b2578090cb0",
+      "size": 1822832,
+      "abc_layout": "merged",
+      "module_name": "entry",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-7.0-Beta1/Photos.hap",
+      "sha256": "e3355cdb10053b8f37292c5ea9ec9fd7df0390f2daf537f7a64078024f332d37",
+      "size": 11564175,
+      "abc_layout": "merged",
+      "module_name": "phone_photos",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-7.0-Beta1/Settings.hap",
+      "sha256": "b2afa3c0b66c3c58b64cd69fc1611457e3412565a8c4330f71ce61a0fd9bfd1b",
+      "size": 2622333,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-7.0-Beta1/SystemUI-DropdownPanel.hap",
+      "sha256": "1fe571f3f75799eb7a34524b36e0979996075d1a1f9717cacc828204b15873c5",
+      "size": 1705989,
+      "abc_layout": "merged",
+      "module_name": "phone_dropdownpanel",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-7.0-Beta1/SystemUI-NavigationBar.hap",
+      "sha256": "fde14026c94eb272cc64500accc0d63e0f809058061a945044508ee982ac9f2a",
+      "size": 177791,
+      "abc_layout": "merged",
+      "module_name": "default_navigationBar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-7.0-Beta1/SystemUI-ScreenLock.hap",
+      "sha256": "7e6d99cf44f67a421e20ef2d7a86084d52b45dc1fc4c0ea0902dd4ede47c2cc9",
+      "size": 851864,
+      "abc_layout": "merged",
+      "module_name": "phone",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-7.0-Beta1/SystemUI-StatusBar.hap",
+      "sha256": "138005efea895acde60c34788f9d2c2428997066bc6ee1ee368c9a0bdbd7f26d",
+      "size": 590189,
+      "abc_layout": "merged",
+      "module_name": "phone_statusbar",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-7.0-Beta1/SystemUI-SystemDialog.hap",
+      "sha256": "4797d18d57f7234f7e80b9b694691dc3c799b7b633c2214ac28c06da2ad08d0b",
+      "size": 73645,
+      "abc_layout": "merged",
+      "module_name": "default_dialog",
+      "expectation": "decode-ok"
+    },
+    {
+      "path": "OpenHarmony-7.0-Beta1/SystemUI-VolumePanel.hap",
+      "sha256": "8e2d3e6f467df88621b5b631041a60f8636ad68762c6bc8f7bf36cd3ad9be089",
+      "size": 160188,
+      "abc_layout": "merged",
+      "module_name": "default_volumepanel",
+      "expectation": "decode-ok"
+    }
+  ]
+}

@@ -50,7 +50,11 @@ def main():
         first = root / "fixtures/24.0.0.0/local/arithmetic/baseline/input.abc"
         first.write_bytes(first.read_bytes()[:-1])
         run("verify", "--root", "/work/fixtures", ok=False)
-        print(json.dumps({"status": "passed", "corpus": info["corpus"], "checks": ["offline", "read-only", "non-root", "six-version-export", "runtime-oracle", "mismatch", "timeout", "corruption"]}))
+        wild = run("export-wild", "/work/wild")
+        manifest = json.loads((root / "wild/wild-haps/manifest.json").read_text())
+        assert wild["packages"] == len(manifest["packages"]) > 0
+        assert all(pkg["expectation"] in ("decode-ok", "negative-invalid-opcode") for pkg in manifest["packages"])
+        print(json.dumps({"status": "passed", "corpus": info["corpus"], "wild_haps": wild["packages"], "checks": ["offline", "read-only", "non-root", "six-version-export", "runtime-oracle", "mismatch", "timeout", "corruption", "wild-haps-export"]}))
 
 
 if __name__ == "__main__":

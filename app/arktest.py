@@ -316,10 +316,23 @@ def export(dest, version=None, case=None, profile=None):
     return verify(dest)
 
 
+def export_wild(dest):
+    """Copy the baked wild-OHOS hap corpus (verbatim packages + manifest)."""
+    src = ROOT / "wild-haps"
+    manifest = read_json(src / "manifest.json")
+    dest = Path(dest).resolve()
+    if dest.exists() and any(dest.iterdir()):
+        raise ValueError("export destination must be empty")
+    dest.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(src, dest / "wild-haps")
+    return {"packages": len(manifest["packages"]), "dest": str(dest)}
+
+
 def parser():
     p = argparse.ArgumentParser(description=__doc__)
     sub = p.add_subparsers(dest="command", required=True)
     sub.add_parser("info")
+    s = sub.add_parser("export-wild"); s.add_argument("output")
     for name in ["list", "export"]:
         s = sub.add_parser(name)
         for field in ["version", "case", "profile"]:
@@ -362,6 +375,8 @@ def main():
         generate(); result = verify(ROOT / "corpus")
     elif args.command == "export":
         result = export(args.output, args.version, args.case, args.profile)
+    elif args.command == "export-wild":
+        result = export_wild(args.output)
     elif args.command == "inspect":
         result = inspect(args.input)
     elif args.command == "verify":

@@ -336,6 +336,21 @@ def main():
             pandasm_index.append({"path": rel, "sha256": sha(source),
                                   "origin": "runtime_core", "license": "Apache-2.0"})
     write(pandasm / "index.json", {"schema_version": 1, "files": pandasm_index})
+    # Wild OHOS system-image haps: prebuilt packages staged verbatim —
+    # they ARE the artifact (no compilation). Manifest sha256s are
+    # re-checked at staging so a corrupt upload fails the build loudly.
+    wild_src = REPO / "wild-haps"
+    if wild_src.is_dir():
+        wild = stage / "wild-haps"
+        shutil.copytree(wild_src, wild)
+        manifest = json.loads((wild / "manifest.json").read_text())
+        for pkg in manifest["packages"]:
+            f = wild / pkg["path"]
+            if not f.is_file() or sha(f) != pkg["sha256"]:
+                raise ValueError("wild-haps manifest mismatch: " + pkg["path"])
+        for path in sorted(wild.rglob("*")):
+            path.chmod(0o755 if path.is_dir() else 0o644)
+        print(json.dumps({"wild_haps": len(manifest["packages"])}))
     for name in ["versions.json", "profiles.json"]:
         shutil.copy2(REPO / "config" / name, stage / name)
     # Keep notices with copied source and statically linked third-party code.

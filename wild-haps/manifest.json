@@ -1,5 +1,5 @@
 {
-  "_comment": "Wild OHOS system-image haps from hap_collect (rk3568 official builds). expectation: decode-ok = abcd_file::decode must succeed; negative-invalid-opcode = must fail with invalid opcode (3.2/4.0-era opcodes absent from the pinned ISA).",
+  "_comment": "Wild OHOS system-image haps from hap_collect (rk3568 official builds). expectation: decode-ok = abcd_file::decode must succeed. (2026-10-02: the 11 former negative-invalid-opcode packages FLIPPED \u2014 legacy 0.0.0.2 opcode decode landed in abcd-rs, they all decode now.)",
   "packages": [
     {
       "path": "OpenHarmony-3.2-Release/Calc_Demo.hap",
@@ -7,7 +7,7 @@
       "size": 117517,
       "abc_layout": "fa-assets",
       "module_name": ".entry",
-      "expectation": "negative-invalid-opcode"
+      "expectation": "decode-ok"
     },
     {
       "path": "OpenHarmony-3.2-Release/CallUI.hap",
@@ -23,7 +23,7 @@
       "size": 159949,
       "abc_layout": "fa-assets",
       "module_name": ".MyApplication",
-      "expectation": "negative-invalid-opcode"
+      "expectation": "decode-ok"
     },
     {
       "path": "OpenHarmony-3.2-Release/Launcher.hap",
@@ -55,7 +55,7 @@
       "size": 1696083,
       "abc_layout": "fa-assets",
       "module_name": ".entry",
-      "expectation": "negative-invalid-opcode"
+      "expectation": "decode-ok"
     },
     {
       "path": "OpenHarmony-3.2-Release/ScreenShot.hap",
@@ -63,7 +63,7 @@
       "size": 55026,
       "abc_layout": "per-ability",
       "module_name": "phone",
-      "expectation": "negative-invalid-opcode"
+      "expectation": "decode-ok"
     },
     {
       "path": "OpenHarmony-3.2-Release/Settings_FaceAuth.hap",
@@ -71,7 +71,7 @@
       "size": 299293,
       "abc_layout": "per-ability",
       "module_name": "entry",
-      "expectation": "negative-invalid-opcode"
+      "expectation": "decode-ok"
     },
     {
       "path": "OpenHarmony-3.2-Release/SystemUI-DropdownPanel.hap",
@@ -127,7 +127,7 @@
       "size": 38438,
       "abc_layout": "per-ability",
       "module_name": "entry",
-      "expectation": "negative-invalid-opcode"
+      "expectation": "decode-ok"
     },
     {
       "path": "OpenHarmony-4.0-Beta1/Clock_Demo.hap",
@@ -135,7 +135,7 @@
       "size": 159908,
       "abc_layout": "fa-assets",
       "module_name": ".MyApplication",
-      "expectation": "negative-invalid-opcode"
+      "expectation": "decode-ok"
     },
     {
       "path": "OpenHarmony-4.0-Beta1/ScreenShot.hap",
@@ -143,7 +143,7 @@
       "size": 55048,
       "abc_layout": "per-ability",
       "module_name": "phone",
-      "expectation": "negative-invalid-opcode"
+      "expectation": "decode-ok"
     },
     {
       "path": "OpenHarmony-4.0-Beta1/SystemUI-DropdownPanel.hap",
@@ -199,7 +199,7 @@
       "size": 159908,
       "abc_layout": "fa-assets",
       "module_name": ".MyApplication",
-      "expectation": "negative-invalid-opcode"
+      "expectation": "decode-ok"
     },
     {
       "path": "OpenHarmony-4.0-Beta2/SystemUI-DropdownPanel.hap",
@@ -255,7 +255,7 @@
       "size": 206103,
       "abc_layout": "fa-assets",
       "module_name": ".MyApplication",
-      "expectation": "negative-invalid-opcode"
+      "expectation": "decode-ok"
     },
     {
       "path": "OpenHarmony-4.0-Release/Launcher.hap",
@@ -271,7 +271,7 @@
       "size": 1696083,
       "abc_layout": "fa-assets",
       "module_name": ".entry",
-      "expectation": "negative-invalid-opcode"
+      "expectation": "decode-ok"
     },
     {
       "path": "OpenHarmony-4.0-Release/Photos.hap",

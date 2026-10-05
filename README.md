@@ -201,7 +201,7 @@ be called directly with `docker run --entrypoint es2abc arkcompiler-test --help`
 **CI is radar-only; build/publish is a human act on dabai.** GitHub Actions never
 builds or publishes the image. `.github/workflows/upstream-radar.yml` runs weekly
 (Monday 00:00 UTC, plus `workflow_dispatch`) and polls the OpenHarmony manifest
-repo (`gitee.com/ark_standalone_build/manifest`) for the newest `OpenHarmony-*`
+repo (`github.com/FXTi/ark_standalone_build`) for the newest `OpenHarmony-*`
 ref by tip committer date. Drift against `upstream.lock.json`'s `manifest_tag`
 produces ONE standing PR per ref (closing it means wont-port) containing the human
 checklist below; radar infrastructure failures produce ONE standing issue. The

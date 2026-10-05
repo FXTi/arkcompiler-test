@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Upstream drift radar for the OpenHarmony manifest repo (gitee
-ark_standalone_build/manifest). Radar-only: never builds, never gates,
+"""Upstream drift radar for the OpenHarmony manifest repo (GitHub mirror
+FXTi/ark_standalone_build; gitee times out from GH runners). Radar-only: never builds, never gates,
 never auto-merges.
 
 Picks the newest OpenHarmony-* ref (branches and tags) by tip COMMITTER
@@ -23,8 +23,8 @@ import xml.etree.ElementTree as ET
 
 REPO = Path(__file__).resolve().parents[1]
 LOCK = REPO / "upstream.lock.json"
-MANIFEST_REPO = os.environ.get("MANIFEST_REPO", "https://gitee.com/ark_standalone_build/manifest")
-RAW = "https://gitee.com/ark_standalone_build/manifest/raw"
+MANIFEST_REPO = os.environ.get("MANIFEST_REPO", "https://github.com/FXTi/ark_standalone_build")
+RAW = "https://raw.githubusercontent.com/FXTi/ark_standalone_build"
 COMPONENTS = {"arkcompiler/ets_frontend": "ets_frontend",
               "arkcompiler/runtime_core": "runtime_core",
               "arkcompiler/ets_runtime": "ets_runtime"}

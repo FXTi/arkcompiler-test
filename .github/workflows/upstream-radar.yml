@@ -16,7 +16,7 @@ permissions:
   issues: write
 
 env:
-  MANIFEST_REPO: https://gitee.com/ark_standalone_build/manifest
+  MANIFEST_REPO: https://github.com/FXTi/ark_standalone_build
   ISSUE_TITLE: "upstream-radar: infrastructure failure"
 
 jobs:
